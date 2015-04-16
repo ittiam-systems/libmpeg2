@@ -79,24 +79,26 @@ void impeg2d_init_function_ptr(void *pv_codec)
 
     switch(e_proc_arch)
     {
-        case ARCH_ARM_NONEON:
-            impeg2d_init_function_ptr_generic(ps_codec);
+#if defined(ARMV8)
+        case ARCH_ARMV8_GENERIC:
+        default:
+            impeg2d_init_function_ptr_av8(ps_codec);
             break;
-#ifndef ARMV8
+#elif !defined(DISABLE_NEON)
         case ARCH_ARM_A5:
         case ARCH_ARM_A7:
         case ARCH_ARM_A9:
         case ARCH_ARM_A15:
         case ARCH_ARM_A9Q:
         default:
-        impeg2d_init_function_ptr_a9q(ps_codec);
+            impeg2d_init_function_ptr_a9q(ps_codec);
             break;
-#else /* ARMV8 */
-        case ARCH_ARMV8_GENERIC:
+#else
         default:
-            impeg2d_init_function_ptr_av8(ps_codec);
+#endif
+        case ARCH_ARM_NONEON:
+            impeg2d_init_function_ptr_generic(ps_codec);
             break;
-#endif /* ARMV8 */
     }
 }
 
