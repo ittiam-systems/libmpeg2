@@ -62,11 +62,7 @@
 #include "impeg2d_bitstream.h"
 #include "impeg2d_debug.h"
 #include "impeg2d_structs.h"
-
-void impeg2d_init_function_ptr_generic(void *pv_codec);
-void impeg2d_init_function_ptr_ssse3(void *pv_codec);
-void impeg2d_init_function_ptr_sse42(void *pv_codec);
-void impeg2d_init_function_ptr_avx2(void *pv_codec);
+#include "impeg2d_function_selector.h"
 
 void impeg2d_init_function_ptr(void *pv_codec)
 {

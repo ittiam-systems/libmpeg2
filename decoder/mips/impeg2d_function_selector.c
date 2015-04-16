@@ -65,8 +65,7 @@
 #include "impeg2d_pic_proc.h"
 #include "impeg2d_debug.h"
 #include "impeg2d_mc.h"
-
-void impeg2d_init_function_ptr_generic(void *pv_codec);
+#include "impeg2d_function_selector.h"
 
 void impeg2d_init_function_ptr(void *pv_codec)
 {
