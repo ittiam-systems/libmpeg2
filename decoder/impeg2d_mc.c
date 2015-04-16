@@ -591,7 +591,7 @@ void impeg2d_dec_skip_p_mb(dec_state_t *ps_dec, WORD32 u4_num_of_mbs)
         ps_dec->u2_mb_x++;
         ps_dec->u2_num_mbs_left--;
 
-        if ((ps_dec->u2_mb_x == ps_dec->u2_num_horiz_mb) && ((ps_dec->s_bit_stream.u4_offset + START_CODE_PREFIX_LEN) < ps_dec->s_bit_stream.u4_max_offset))
+        if (ps_dec->u2_mb_x == ps_dec->u2_num_horiz_mb)
         {
             ps_dec->u2_mb_x = 0;
             ps_dec->u2_mb_y++;
@@ -704,7 +704,7 @@ void impeg2d_dec_skip_b_mb(dec_state_t *ps_dec, WORD32 u4_num_of_mbs)
         ps_dec->u2_mb_x++;
         ps_dec->u2_num_mbs_left--;
 
-        if ((ps_dec->u2_mb_x == ps_dec->u2_num_horiz_mb) && ((ps_dec->s_bit_stream.u4_offset + START_CODE_PREFIX_LEN) < ps_dec->s_bit_stream.u4_max_offset))
+        if (ps_dec->u2_mb_x == ps_dec->u2_num_horiz_mb)
         {
             ps_dec->u2_mb_x = 0;
             ps_dec->u2_mb_y++;

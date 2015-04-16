@@ -236,7 +236,7 @@ IMPEG2D_ERROR_CODES_T impeg2d_dec_d_slice(dec_state_t *ps_dec)
         {
             return IMPEG2D_BITSTREAM_BUFF_EXCEEDED_ERR;
         }
-        else if ((ps_dec->u2_mb_x == ps_dec->u2_num_horiz_mb) && ((ps_dec->s_bit_stream.u4_offset + START_CODE_PREFIX_LEN) < ps_dec->s_bit_stream.u4_max_offset))
+        else if (ps_dec->u2_mb_x == ps_dec->u2_num_horiz_mb)
         {
             ps_dec->u2_mb_x = 0;
             ps_dec->u2_mb_y++;

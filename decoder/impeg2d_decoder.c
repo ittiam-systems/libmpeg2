@@ -143,7 +143,6 @@ void impeg2d_dec_hdr(void *pv_dec,impeg2d_video_decode_ip_t *ps_ip,
         ps_op->s_ivd_video_decode_op_t.u4_frame_decoded_flag = 0;
         /* MOD */
         ps_dec->u2_header_done = 1;
-        ps_dec->u2_decode_header = 0;
 
     }
 }

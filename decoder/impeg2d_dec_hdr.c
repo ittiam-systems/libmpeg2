@@ -1129,12 +1129,12 @@ WORD32 impeg2d_get_slice_pos(dec_state_multi_core_t *ps_dec_state_multi_core)
     while(1)
     {
         WORD32 i4_is_slice;
-        u4_bits = impeg2d_bit_stream_nxt(&s_bitstrm,START_CODE_LEN);
-        if(s_bitstrm.u4_offset >= s_bitstrm.u4_max_offset)
+
+        if(s_bitstrm.u4_offset + START_CODE_LEN >= s_bitstrm.u4_max_offset)
         {
             break;
         }
-
+        u4_bits = impeg2d_bit_stream_nxt(&s_bitstrm,START_CODE_LEN);
 
         i4_row = u4_bits & 0xFF;
 

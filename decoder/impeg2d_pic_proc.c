@@ -367,6 +367,7 @@ IMPEG2D_ERROR_CODES_T impeg2d_pre_pic_dec_proc(dec_state_t *ps_dec)
             impeg2_buf_mgr_set_status((buf_mgr_t *)ps_dec->pv_pic_buf_mg, ps_dec->i4_cur_buf_id, BUF_MGR_REF);
 
             ps_pic_buf->u4_ts = ps_dec->u4_inp_ts;
+            ps_pic_buf->e_pic_type = ps_dec->e_pic_type;
             ps_dec->ps_cur_pic = ps_pic_buf;
             ps_dec->s_cur_frm_buf.pu1_y = ps_pic_buf->pu1_y;
             ps_dec->s_cur_frm_buf.pu1_u = ps_pic_buf->pu1_u;
@@ -407,6 +408,7 @@ IMPEG2D_ERROR_CODES_T impeg2d_pre_pic_dec_proc(dec_state_t *ps_dec)
         impeg2_buf_mgr_set_status((buf_mgr_t *)ps_dec->pv_pic_buf_mg, ps_dec->i4_cur_buf_id, BUF_MGR_REF);
 
         ps_pic_buf->u4_ts = ps_dec->u4_inp_ts;
+        ps_pic_buf->e_pic_type = ps_dec->e_pic_type;
         ps_dec->ps_cur_pic = ps_pic_buf;
         ps_dec->s_cur_frm_buf.pu1_y = ps_pic_buf->pu1_y;
         ps_dec->s_cur_frm_buf.pu1_u = ps_pic_buf->pu1_u;

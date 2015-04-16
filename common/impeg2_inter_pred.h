@@ -53,6 +53,9 @@ typedef struct
      */
     WORD32 i4_buf_id;
 
+    /* To store the buffer's picture type */
+    e_pic_type_t e_pic_type;
+
 }pic_buf_t;
 
 typedef void pf_copy_mb_t (yuv_buf_t *src_buf,

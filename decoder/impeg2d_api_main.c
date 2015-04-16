@@ -896,6 +896,20 @@ IV_API_CALL_STATUS_T impeg2d_api_reset(iv_obj_t *ps_dechdl,
 
     if(ps_dec_state_multi_core != NULL)
     {
+        if(ps_dec_state->aps_ref_pics[1] != NULL)
+            impeg2_buf_mgr_release(ps_dec_state->pv_pic_buf_mg, ps_dec_state->aps_ref_pics[1]->i4_buf_id, BUF_MGR_REF);
+        if(ps_dec_state->aps_ref_pics[0] != NULL)
+            impeg2_buf_mgr_release(ps_dec_state->pv_pic_buf_mg, ps_dec_state->aps_ref_pics[0]->i4_buf_id, BUF_MGR_REF);
+        while(1)
+        {
+            pic_buf_t *ps_disp_pic = impeg2_disp_mgr_get(&ps_dec_state->s_disp_mgr, &ps_dec_state->i4_disp_buf_id);
+            if(NULL == ps_disp_pic)
+                break;
+            if(0 == ps_dec_state->u4_share_disp_buf)
+                impeg2_buf_mgr_release(ps_dec_state->pv_pic_buf_mg, ps_disp_pic->i4_buf_id, BUF_MGR_DISP);
+
+        }
+
         for(i4_num_threads = 0; i4_num_threads < MAX_THREADS; i4_num_threads++)
         {
 
@@ -908,6 +922,8 @@ IV_API_CALL_STATUS_T impeg2d_api_reset(iv_obj_t *ps_dechdl,
             ps_dec_state->u2_header_done    = 0;  /* Header decoding not done */
             ps_dec_state->u4_frm_buf_stride = 0;
             ps_dec_state->u2_is_mpeg2       = 0;
+            ps_dec_state->aps_ref_pics[0] = NULL;
+            ps_dec_state->aps_ref_pics[1] = NULL;
         }
     }
     else
@@ -3138,6 +3154,11 @@ IV_API_CALL_STATUS_T impeg2d_api_entity(iv_obj_t *ps_dechdl,
 
             ps_dec_op->s_ivd_video_decode_op_t.u4_progressive_frame_flag           = IV_PROGRESSIVE;
 
+            if (0 == ps_dec_state->u4_frm_buf_stride)
+            {
+                ps_dec_state->u4_frm_buf_stride = ALIGN16(ps_dec_state->u2_horizontal_size);
+            }
+
             ps_dec_op->s_ivd_video_decode_op_t.s_disp_frm_buf.u4_y_wd = ps_dec_state->u2_horizontal_size;
             ps_dec_op->s_ivd_video_decode_op_t.s_disp_frm_buf.u4_y_strd = ps_dec_state->u4_frm_buf_stride;
             ps_dec_op->s_ivd_video_decode_op_t.s_disp_frm_buf.u4_y_ht = ps_dec_state->u2_vertical_size;
@@ -3181,36 +3202,41 @@ IV_API_CALL_STATUS_T impeg2d_api_entity(iv_obj_t *ps_dechdl,
                 if (IVD_ERROR_NONE ==
                         ps_dec_op->s_ivd_video_decode_op_t.u4_error_code)
                 {
-                    if(ps_dec_state->ps_disp_pic)
-                    ps_dec_op->s_ivd_video_decode_op_t.u4_output_present = 1;
-                    else
-                    ps_dec_op->s_ivd_video_decode_op_t.u4_output_present = 0;
                     if(ps_dec_state->u1_first_frame_done == 0)
                     {
                         ps_dec_state->u1_first_frame_done = 1;
                     }
 
-                    switch(ps_dec_state->e_pic_type)
+                    if(ps_dec_state->ps_disp_pic)
                     {
-                        case I_PIC :
-                        ps_dec_op->s_ivd_video_decode_op_t.e_pic_type = IV_I_FRAME;
-                        break;
+                        ps_dec_op->s_ivd_video_decode_op_t.u4_output_present = 1;
+                        switch(ps_dec_state->ps_disp_pic->e_pic_type)
+                        {
+                            case I_PIC :
+                            ps_dec_op->s_ivd_video_decode_op_t.e_pic_type = IV_I_FRAME;
+                            break;
 
-                        case P_PIC:
-                        ps_dec_op->s_ivd_video_decode_op_t.e_pic_type = IV_P_FRAME;
-                        break;
+                            case P_PIC:
+                            ps_dec_op->s_ivd_video_decode_op_t.e_pic_type = IV_P_FRAME;
+                            break;
 
-                        case B_PIC:
-                        ps_dec_op->s_ivd_video_decode_op_t.e_pic_type = IV_B_FRAME;
-                        break;
+                            case B_PIC:
+                            ps_dec_op->s_ivd_video_decode_op_t.e_pic_type = IV_B_FRAME;
+                            break;
 
-                        case D_PIC:
-                        ps_dec_op->s_ivd_video_decode_op_t.e_pic_type = IV_I_FRAME;
-                        break;
+                            case D_PIC:
+                            ps_dec_op->s_ivd_video_decode_op_t.e_pic_type = IV_I_FRAME;
+                            break;
 
-                        default :
-                        ps_dec_op->s_ivd_video_decode_op_t.e_pic_type = IV_FRAMETYPE_DEFAULT;
-                        break;
+                            default :
+                            ps_dec_op->s_ivd_video_decode_op_t.e_pic_type = IV_FRAMETYPE_DEFAULT;
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        ps_dec_op->s_ivd_video_decode_op_t.u4_output_present = 0;
+                        ps_dec_op->s_ivd_video_decode_op_t.e_pic_type = IV_NA_FRAME;
                     }
 
                     ps_dec_state->u4_num_frames_decoded++;
