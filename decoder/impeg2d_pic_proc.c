@@ -70,14 +70,14 @@ void impeg2d_format_convert(dec_state_t *ps_dec,
     {
         ps_dec->pf_copy_yuv420p_buf(pu1_src_y, pu1_src_u, pu1_src_v, pu1_dst_y,
                                     pu1_dst_u, pu1_dst_v,
-                                    ps_dec->u2_frame_width,
+                                    ps_dec->u2_horizontal_size,
                                     u4_num_rows,
-                                    ps_dec->u4_frm_buf_stride,
-                                    (ps_dec->u4_frm_buf_stride >> 1),
-                                    (ps_dec->u4_frm_buf_stride >> 1),
                                     ps_dec->u2_frame_width,
                                     (ps_dec->u2_frame_width >> 1),
-                                    (ps_dec->u2_frame_width >> 1));
+                                    (ps_dec->u2_frame_width >> 1),
+                                    ps_dec->u4_frm_buf_stride,
+                                    (ps_dec->u4_frm_buf_stride >> 1),
+                                    (ps_dec->u4_frm_buf_stride >> 1));
     }
     else if (IV_YUV_422ILE == ps_dec->i4_chromaFormat)
     {
