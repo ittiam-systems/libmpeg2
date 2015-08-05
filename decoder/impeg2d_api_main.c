@@ -992,15 +992,6 @@ IV_API_CALL_STATUS_T impeg2d_api_set_params(iv_obj_t *ps_dechdl,void *pv_api_ip,
         }
 
     }
-    else
-    {
-        if(((WORD32)ps_ctl_dec_ip->s_ivd_ctl_set_config_ip_t.u4_disp_wd < 0) ||
-            ((ps_ctl_dec_ip->s_ivd_ctl_set_config_ip_t.u4_disp_wd != 0) && (ps_ctl_dec_ip->s_ivd_ctl_set_config_ip_t.u4_disp_wd < ps_dec_state->u2_horizontal_size)))
-        {
-            ps_ctl_dec_op->s_ivd_ctl_set_config_op_t.u4_error_code = IV_FAIL;
-            return(IV_FAIL);
-        }
-    }
 
 
     ps_dec_state->u2_decode_header    = (UWORD8)ps_ctl_dec_ip->s_ivd_ctl_set_config_ip_t.e_vid_dec_mode;
@@ -3156,7 +3147,7 @@ IV_API_CALL_STATUS_T impeg2d_api_entity(iv_obj_t *ps_dechdl,
 
             if (0 == ps_dec_state->u4_frm_buf_stride)
             {
-                ps_dec_state->u4_frm_buf_stride = ALIGN16(ps_dec_state->u2_horizontal_size);
+                ps_dec_state->u4_frm_buf_stride = (ps_dec_state->u2_horizontal_size);
             }
 
             ps_dec_op->s_ivd_video_decode_op_t.s_disp_frm_buf.u4_y_wd = ps_dec_state->u2_horizontal_size;
