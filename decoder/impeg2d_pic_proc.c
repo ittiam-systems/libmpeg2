@@ -117,7 +117,11 @@ void impeg2d_format_convert(dec_state_t *ps_dec,
         dest_inc_Y =    ps_dec->u4_frm_buf_stride;
         dest_inc_UV =   ((ps_dec->u4_frm_buf_stride + 1) >> 1) << 1;
         convert_uv_only = 0;
+
         if(1 == ps_dec->u4_share_disp_buf)
+            convert_uv_only = 1;
+
+        if(pu1_src_y == pu1_dst_y)
             convert_uv_only = 1;
 
         if(ps_dec->i4_chromaFormat == IV_YUV_420SP_UV)
@@ -365,6 +369,8 @@ IMPEG2D_ERROR_CODES_T impeg2d_pre_pic_dec_proc(dec_state_t *ps_dec)
 
             impeg2_buf_mgr_set_status((buf_mgr_t *)ps_dec->pv_pic_buf_mg, ps_dec->i4_cur_buf_id, BUF_MGR_DISP);
             impeg2_buf_mgr_set_status((buf_mgr_t *)ps_dec->pv_pic_buf_mg, ps_dec->i4_cur_buf_id, BUF_MGR_REF);
+            if(ps_dec->u4_deinterlace)
+                impeg2_buf_mgr_set_status((buf_mgr_t *)ps_dec->pv_pic_buf_mg, ps_dec->i4_cur_buf_id, MPEG2_BUF_MGR_DEINT);
 
             ps_pic_buf->u4_ts = ps_dec->u4_inp_ts;
             ps_pic_buf->e_pic_type = ps_dec->e_pic_type;
@@ -406,6 +412,8 @@ IMPEG2D_ERROR_CODES_T impeg2d_pre_pic_dec_proc(dec_state_t *ps_dec)
         }
         impeg2_buf_mgr_set_status((buf_mgr_t *)ps_dec->pv_pic_buf_mg, ps_dec->i4_cur_buf_id, BUF_MGR_DISP);
         impeg2_buf_mgr_set_status((buf_mgr_t *)ps_dec->pv_pic_buf_mg, ps_dec->i4_cur_buf_id, BUF_MGR_REF);
+        if(ps_dec->u4_deinterlace)
+            impeg2_buf_mgr_set_status((buf_mgr_t *)ps_dec->pv_pic_buf_mg, ps_dec->i4_cur_buf_id, MPEG2_BUF_MGR_DEINT);
 
         ps_pic_buf->u4_ts = ps_dec->u4_inp_ts;
         ps_pic_buf->e_pic_type = ps_dec->e_pic_type;
