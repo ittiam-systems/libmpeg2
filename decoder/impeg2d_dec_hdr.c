@@ -156,7 +156,7 @@ IMPEG2D_ERROR_CODES_T impeg2d_dec_seq_hdr(dec_state_t *ps_dec)
             ps_dec->u2_vertical_size = u2_height;
             if (0 == ps_dec->u4_frm_buf_stride)
             {
-                ps_dec->u4_frm_buf_stride  = (UWORD32) ALIGN16(u2_width);
+                ps_dec->u4_frm_buf_stride  = (UWORD32) (u2_width);
             }
         }
         else
