@@ -33,4 +33,5 @@ LOCAL_C_INCLUDES_arm64 += $(libmpeg2d_inc_dir_arm64)
 LOCAL_CFLAGS_arm64 += $(libmpeg2d_cflags_arm64)
 
 # CLANG WORKAROUNDS
+LOCAL_CLANG_ASFLAGS_arm64 += -no-integrated-as
 LOCAL_CLANG_ASFLAGS_arm64 += $(addprefix -Wa$(comma)-I,$(libmpeg2d_inc_dir_arm64))
