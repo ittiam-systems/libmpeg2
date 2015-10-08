@@ -25,7 +25,7 @@ to support B pictures. Because of format conversion in a thread, codec delay is 
 To reduce this delay, format conversion has to wait for MB status before converting for B pictures.
 To avoid this check the delay is increased to 2 and hence number of reference frames minimum is 4.
 Because of temporal dependency in deinterlacer one additional buffer is also needed */
-#define NUM_INT_FRAME_BUFFERS                     4
+#define NUM_INT_FRAME_BUFFERS                     5
 
 
 #define MAX_WIDTH               4096
@@ -40,6 +40,9 @@ Because of temporal dependency in deinterlacer one additional buffer is also nee
 #define DEC_ORDER               0
 
 #define MAX_BITSTREAM_BUFFER_SIZE       2000 * 1024
+
+/* Flag to signal that buffer is held by deinterlacing */
+#define MPEG2_BUF_MGR_DEINT (BUF_MGR_DISP << 1)
 
 typedef enum
 {
@@ -359,6 +362,18 @@ typedef struct dec_state_struct_t
     IVD_SOC_T       e_processor_soc;
 
     WORD32          i4_frame_decoded;
+
+    /** Flag to enable deinterlace */
+    UWORD32          u4_deinterlace;
+
+    /** Deinterlacer context */
+    void            *pv_deinterlacer_ctxt;
+
+    /** Picture buffer held by deinterlacer */
+    pic_buf_t       *ps_deint_pic;
+
+    /** Buffer used after deinterlacer for format conversion */
+    UWORD8          *pu1_deint_fmt_buf;
 
 }dec_state_t;
 
