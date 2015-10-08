@@ -40,6 +40,7 @@
 #include "impeg2d_structs.h"
 #include "impeg2_globals.h"
 #include "impeg2d_pic_proc.h"
+#include "impeg2d_deinterlace.h"
 
 
 
@@ -889,9 +890,22 @@ void impeg2d_dec_pic_data_thread(dec_state_t *ps_dec)
                     start_row = s_job.i2_start_mb_y << 4;
                     num_rows = MIN((s_job.i2_end_mb_y << 4), ps_dec->u2_vertical_size);
                     num_rows -= start_row;
-                    impeg2d_format_convert(ps_dec, ps_dec->ps_disp_pic,
-                                        ps_dec->ps_disp_frm_buf,
-                                        start_row, num_rows);
+
+                    if(ps_dec->u4_deinterlace && (0 == ps_dec->u2_progressive_frame))
+                    {
+                        impeg2d_deinterlace(ps_dec,
+                                            ps_dec->ps_disp_pic,
+                                            ps_dec->ps_disp_frm_buf,
+                                            start_row,
+                                            num_rows);
+
+                    }
+                    else
+                    {
+                        impeg2d_format_convert(ps_dec, ps_dec->ps_disp_pic,
+                                               ps_dec->ps_disp_frm_buf,
+                                               start_row, num_rows);
+                    }
                     break;
 
                 }
@@ -955,18 +969,46 @@ void impeg2d_dec_pic_data_thread(dec_state_t *ps_dec)
                 start_row = s_job.i2_start_mb_y << 4;
                 num_rows = MIN((s_job.i2_end_mb_y << 4), ps_dec->u2_vertical_size);
                 num_rows -= start_row;
-                impeg2d_format_convert(ps_dec, ps_dec->ps_disp_pic,
-                                    ps_dec->ps_disp_frm_buf,
-                                    start_row, num_rows);
+                if(ps_dec->u4_deinterlace && (0 == ps_dec->u2_progressive_frame))
+                {
+                    impeg2d_deinterlace(ps_dec,
+                                        ps_dec->ps_disp_pic,
+                                        ps_dec->ps_disp_frm_buf,
+                                        start_row,
+                                        num_rows);
+
+                }
+                else
+                {
+                    impeg2d_format_convert(ps_dec,
+                                           ps_dec->ps_disp_pic,
+                                           ps_dec->ps_disp_frm_buf,
+                                           start_row,
+                                           num_rows);
+                }
             }
         }
     }
     else
     {
         if((NULL != ps_dec->ps_disp_pic) && ((0 == ps_dec->u4_share_disp_buf) || (IV_YUV_420P != ps_dec->i4_chromaFormat)))
-            impeg2d_format_convert(ps_dec, ps_dec->ps_disp_pic,
-                            ps_dec->ps_disp_frm_buf,
-                            0, ps_dec->u2_vertical_size);
+        {
+            if(ps_dec->u4_deinterlace && (0 == ps_dec->u2_progressive_frame))
+            {
+                impeg2d_deinterlace(ps_dec,
+                                    ps_dec->ps_disp_pic,
+                                    ps_dec->ps_disp_frm_buf,
+                                    0,
+                                    ps_dec->u2_vertical_size);
+
+            }
+            else
+            {
+                impeg2d_format_convert(ps_dec, ps_dec->ps_disp_pic,
+                                        ps_dec->ps_disp_frm_buf,
+                                        0, ps_dec->u2_vertical_size);
+            }
+        }
     }
 }
 
@@ -1088,9 +1130,10 @@ static WORD32 impeg2d_init_thread_dec_ctxt(dec_state_t *ps_dec,
 
     ps_dec_thd->ps_func_bi_direct = ps_dec->ps_func_bi_direct;
     ps_dec_thd->ps_func_forw_or_back = ps_dec->ps_func_forw_or_back;
+    ps_dec_thd->pv_deinterlacer_ctxt = ps_dec->pv_deinterlacer_ctxt;
+    ps_dec_thd->ps_deint_pic = ps_dec->ps_deint_pic;
 
     return 0;
-
 }
 
 
