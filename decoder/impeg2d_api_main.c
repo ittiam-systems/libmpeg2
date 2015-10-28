@@ -90,6 +90,17 @@
 #define CODEC_RELEASE_VER       "01.00"
 #define CODEC_VENDOR            "ITTIAM"
 
+#ifdef __ANDROID__
+#define VERSION(version_string, codec_name, codec_release_type, codec_release_ver, codec_vendor)    \
+    strcpy(version_string,"@(#)Id:");                                                               \
+    strcat(version_string,codec_name);                                                              \
+    strcat(version_string,"_");                                                                     \
+    strcat(version_string,codec_release_type);                                                      \
+    strcat(version_string," Ver:");                                                                 \
+    strcat(version_string,codec_release_ver);                                                       \
+    strcat(version_string," Released by ");                                                         \
+    strcat(version_string,codec_vendor);
+#else
 #define VERSION(version_string, codec_name, codec_release_type, codec_release_ver, codec_vendor)    \
     strcpy(version_string,"@(#)Id:");                                                               \
     strcat(version_string,codec_name);                                                              \
@@ -103,6 +114,7 @@
     strcat(version_string,__DATE__);                                                                \
     strcat(version_string," @ ");                                                                       \
     strcat(version_string,__TIME__);
+#endif
 
 
 #define MIN_OUT_BUFS_420    3
