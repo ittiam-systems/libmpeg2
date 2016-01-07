@@ -83,8 +83,8 @@ void impeg2d_next_code(dec_state_t *ps_dec, UWORD32 u4_start_code_val)
     ps_stream = &ps_dec->s_bit_stream;
     impeg2d_bit_stream_flush_to_byte_boundary(ps_stream);
 
-    while ((impeg2d_bit_stream_nxt(ps_stream,START_CODE_LEN) != u4_start_code_val)
-        && (ps_dec->s_bit_stream.u4_offset <= ps_dec->s_bit_stream.u4_max_offset))
+    while ((impeg2d_bit_stream_nxt(ps_stream,START_CODE_LEN) != u4_start_code_val) &&
+            (ps_dec->s_bit_stream.u4_offset < ps_dec->s_bit_stream.u4_max_offset))
     {
 
         if (impeg2d_bit_stream_get(ps_stream,8) != 0)
@@ -112,7 +112,7 @@ void impeg2d_peek_next_start_code(dec_state_t *ps_dec)
     impeg2d_bit_stream_flush_to_byte_boundary(ps_stream);
 
     while ((impeg2d_bit_stream_nxt(ps_stream,START_CODE_PREFIX_LEN) != START_CODE_PREFIX)
-        && (ps_dec->s_bit_stream.u4_offset <= ps_dec->s_bit_stream.u4_max_offset))
+        && (ps_dec->s_bit_stream.u4_offset < ps_dec->s_bit_stream.u4_max_offset))
     {
         impeg2d_bit_stream_get(ps_stream,8);
     }
@@ -670,7 +670,8 @@ IMPEG2D_ERROR_CODES_T impeg2d_dec_pic_hdr(dec_state_t *ps_dec)
     /*  }                                                                    */
     /*  extra_bit_picture             1                                      */
     /*-----------------------------------------------------------------------*/
-    while (impeg2d_bit_stream_nxt(ps_stream,1) == 1)
+    while (impeg2d_bit_stream_nxt(ps_stream,1) == 1 &&
+           ps_stream->u4_offset < ps_stream->u4_max_offset)
     {
         impeg2d_bit_stream_get(ps_stream,9);
     }
@@ -801,7 +802,8 @@ IMPEG2D_ERROR_CODES_T impeg2d_dec_slice(dec_state_t *ps_dec)
     {
         impeg2d_bit_stream_flush(ps_stream,9);
         /* Flush extra bit information */
-        while (impeg2d_bit_stream_nxt(ps_stream,1) == 1)
+        while (impeg2d_bit_stream_nxt(ps_stream,1) == 1 &&
+               ps_stream->u4_offset < ps_stream->u4_max_offset)
         {
             impeg2d_bit_stream_flush(ps_stream,9);
         }
@@ -1365,10 +1367,12 @@ void impeg2d_flush_ext_and_user_data(dec_state_t *ps_dec)
     ps_stream    = &ps_dec->s_bit_stream;
     u4_start_code = impeg2d_bit_stream_nxt(ps_stream,START_CODE_LEN);
 
-    while(u4_start_code == EXTENSION_START_CODE || u4_start_code == USER_DATA_START_CODE)
+    while((u4_start_code == EXTENSION_START_CODE || u4_start_code == USER_DATA_START_CODE) &&
+            (ps_stream->u4_offset < ps_stream->u4_max_offset))
     {
         impeg2d_bit_stream_flush(ps_stream,START_CODE_LEN);
-        while(impeg2d_bit_stream_nxt(ps_stream,START_CODE_PREFIX_LEN) != START_CODE_PREFIX)
+        while(impeg2d_bit_stream_nxt(ps_stream,START_CODE_PREFIX_LEN) != START_CODE_PREFIX &&
+                (ps_stream->u4_offset < ps_stream->u4_max_offset))
         {
             impeg2d_bit_stream_flush(ps_stream,8);
         }
@@ -1397,7 +1401,8 @@ void impeg2d_dec_user_data(dec_state_t *ps_dec)
     while(u4_start_code == USER_DATA_START_CODE)
     {
         impeg2d_bit_stream_flush(ps_stream,START_CODE_LEN);
-        while(impeg2d_bit_stream_nxt(ps_stream,START_CODE_PREFIX_LEN) != START_CODE_PREFIX)
+        while((impeg2d_bit_stream_nxt(ps_stream,START_CODE_PREFIX_LEN) != START_CODE_PREFIX) &&
+                (ps_stream->u4_offset < ps_stream->u4_max_offset))
         {
             impeg2d_bit_stream_flush(ps_stream,8);
         }
@@ -1427,7 +1432,8 @@ IMPEG2D_ERROR_CODES_T impeg2d_dec_seq_ext_data(dec_state_t *ps_dec)
     u4_start_code = impeg2d_bit_stream_nxt(ps_stream,START_CODE_LEN);
     while( (u4_start_code == EXTENSION_START_CODE ||
             u4_start_code == USER_DATA_START_CODE) &&
-            (IMPEG2D_ERROR_CODES_T)IVD_ERROR_NONE == e_error)
+            (IMPEG2D_ERROR_CODES_T)IVD_ERROR_NONE == e_error &&
+            (ps_stream->u4_offset < ps_stream->u4_max_offset))
     {
         if(u4_start_code == USER_DATA_START_CODE)
         {
@@ -1479,7 +1485,8 @@ IMPEG2D_ERROR_CODES_T impeg2d_dec_pic_ext_data(dec_state_t *ps_dec)
     u4_start_code   = impeg2d_bit_stream_nxt(ps_stream,START_CODE_LEN);
     while ( (u4_start_code == EXTENSION_START_CODE ||
             u4_start_code == USER_DATA_START_CODE) &&
-            (IMPEG2D_ERROR_CODES_T)IVD_ERROR_NONE == e_error)
+            (IMPEG2D_ERROR_CODES_T)IVD_ERROR_NONE == e_error &&
+            (ps_stream->u4_offset < ps_stream->u4_max_offset))
     {
         if(u4_start_code == USER_DATA_START_CODE)
         {
