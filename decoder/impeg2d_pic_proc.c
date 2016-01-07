@@ -223,7 +223,8 @@ void impeg2d_get_bottom_field_buf(yuv_buf_t *ps_src_buf,yuv_buf_t *ps_dst_buf,
 UWORD16 impeg2d_get_mb_addr_incr(stream_t *ps_stream)
 {
     UWORD16 u2_mb_addr_incr = 0;
-    while (impeg2d_bit_stream_nxt(ps_stream,MB_ESCAPE_CODE_LEN) == MB_ESCAPE_CODE)
+    while (impeg2d_bit_stream_nxt(ps_stream,MB_ESCAPE_CODE_LEN) == MB_ESCAPE_CODE &&
+            ps_stream->u4_offset < ps_stream->u4_max_offset)
     {
         impeg2d_bit_stream_flush(ps_stream,MB_ESCAPE_CODE_LEN);
         u2_mb_addr_incr += 33;
