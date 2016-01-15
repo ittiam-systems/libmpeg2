@@ -18,6 +18,7 @@
  * Originally developed and contributed by Ittiam Systems Pvt. Ltd, Bangalore
 */
 #include <string.h>
+#include <cutils/log.h>
 
 #include "iv_datatypedef.h"
 #include "iv.h"
@@ -929,6 +930,12 @@ void impeg2d_dec_pic_data_thread(dec_state_t *ps_dec)
             temp = u4_bits_read & 0xFF;
             i4_continue_decode = (((u4_bits_read >> 8) == 0x01) && (temp) && (temp <= 0xAF));
 
+            if (1 == ps_dec->i4_num_cores && 0 == ps_dec->u2_num_mbs_left)
+            {
+                i4_continue_decode = 0;
+                android_errorWriteLog(0x534e4554, "26070014");
+            }
+
             if(i4_continue_decode)
             {
                 /* If the slice is from the same row, then continue decoding without dequeue */
@@ -1191,7 +1198,7 @@ WORD32 impeg2d_get_slice_pos(dec_state_multi_core_t *ps_dec_state_multi_core)
         i4_row -= 1;
 
 
-        if(i4_prev_row != i4_row)
+        if(i4_prev_row < i4_row)
         {
             /* Create a job for previous slice row */
             if(i4_start_row != -1)
@@ -1215,6 +1222,8 @@ WORD32 impeg2d_get_slice_pos(dec_state_multi_core_t *ps_dec_state_multi_core)
             /* Store current slice's row position */
             i4_start_row = i4_row;
 
+        } else if (i4_prev_row > i4_row) {
+            android_errorWriteLog(0x534e4554, "26070014");
         }
 
 
