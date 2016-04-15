@@ -18,8 +18,9 @@
  * Originally developed and contributed by Ittiam Systems Pvt. Ltd, Bangalore
 */
 #include <string.h>
+#ifdef __ANDROID__
 #include <cutils/log.h>
-
+#endif
 #include "iv_datatypedef.h"
 #include "iv.h"
 #include "ivd.h"
@@ -933,7 +934,9 @@ void impeg2d_dec_pic_data_thread(dec_state_t *ps_dec)
             if (1 == ps_dec->i4_num_cores && 0 == ps_dec->u2_num_mbs_left)
             {
                 i4_continue_decode = 0;
+#ifdef __ANDROID__
                 android_errorWriteLog(0x534e4554, "26070014");
+#endif
             }
 
             if(i4_continue_decode)
@@ -1222,10 +1225,13 @@ WORD32 impeg2d_get_slice_pos(dec_state_multi_core_t *ps_dec_state_multi_core)
             /* Store current slice's row position */
             i4_start_row = i4_row;
 
-        } else if (i4_prev_row > i4_row) {
+        }
+#ifdef __ANDROID__
+        else if (i4_prev_row > i4_row)
+        {
             android_errorWriteLog(0x534e4554, "26070014");
         }
-
+#endif
 
         impeg2d_bit_stream_flush(&s_bitstrm, START_CODE_LEN);
 
