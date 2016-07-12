@@ -376,10 +376,14 @@ void impeg2d_dec_seq_disp_ext(dec_state_t *ps_dec)
     }
     */
 
-    impeg2d_bit_stream_get(ps_stream,7);
-    if (impeg2d_bit_stream_get_bit(ps_stream) == 1)
+    impeg2d_bit_stream_get(ps_stream, 4);
+    ps_dec->u1_video_format = impeg2d_bit_stream_get(ps_stream, 3);
+    ps_dec->u1_colour_description = impeg2d_bit_stream_get(ps_stream, 1);
+    if(ps_dec->u1_colour_description)
     {
-        impeg2d_bit_stream_get(ps_stream,24);
+        ps_dec->u1_colour_primaries = impeg2d_bit_stream_get(ps_stream, 8);
+        ps_dec->u1_transfer_characteristics = impeg2d_bit_stream_get(ps_stream, 8);
+        ps_dec->u1_matrix_coefficients = impeg2d_bit_stream_get(ps_stream, 8);
     }
 
     /* display_horizontal_size and display_vertical_size */
