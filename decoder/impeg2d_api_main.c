@@ -317,21 +317,32 @@ IV_API_CALL_STATUS_T impeg2d_api_get_seq_info(iv_obj_t *ps_dechdl,
         ps_op->u1_frame_rate_code = ps_codec->u2_frame_rate_code;
         ps_op->u1_frame_rate_extension_n = ps_codec->u2_frame_rate_extension_n;
         ps_op->u1_frame_rate_extension_d = ps_codec->u2_frame_rate_extension_d;
-        ps_op->u1_video_format = ps_codec->u1_video_format;
-        ps_op->u1_colour_primaries = ps_codec->u1_colour_primaries;
-        ps_op->u1_transfer_characteristics = ps_codec->u1_transfer_characteristics;
-        ps_op->u1_matrix_coefficients = ps_codec->u1_matrix_coefficients;
-        ps_op->u2_display_horizontal_size = ps_codec->u2_display_horizontal_size;
-        ps_op->u2_display_vertical_size = ps_codec->u2_display_vertical_size;
+        if(ps_codec->u1_seq_disp_extn_present == 1)
+        {
+            ps_op->u1_video_format = ps_codec->u1_video_format;
+            ps_op->u1_colour_primaries = ps_codec->u1_colour_primaries;
+            ps_op->u1_transfer_characteristics = ps_codec->u1_transfer_characteristics;
+            ps_op->u1_matrix_coefficients = ps_codec->u1_matrix_coefficients;
+            ps_op->u2_display_horizontal_size = ps_codec->u2_display_horizontal_size;
+            ps_op->u2_display_vertical_size = ps_codec->u2_display_vertical_size;
+        }
+        else
+        {
+            ps_op->u1_video_format = 5;
+            ps_op->u1_colour_primaries = 2;
+            ps_op->u1_transfer_characteristics = 2;
+            ps_op->u1_matrix_coefficients = 2;
+            ps_op->u2_display_horizontal_size = ps_codec->u2_horizontal_size;
+            ps_op->u2_display_vertical_size = ps_codec->u2_vertical_size;
+        }
         ps_op->u4_error_code = IV_SUCCESS;
+        return IV_SUCCESS;
     }
     else
     {
         ps_op->u4_error_code = IV_FAIL;
+        return IV_FAIL;
     }
-
-
-    return IV_SUCCESS;
 }
 
 /**

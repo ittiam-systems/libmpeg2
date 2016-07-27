@@ -380,6 +380,8 @@ typedef struct dec_state_struct_t
     /** Buffer used after deinterlacer for format conversion */
     UWORD8          *pu1_deint_fmt_buf;
 
+    /** Flag to indicate if Seq Display Extn is present */
+    UWORD8          u1_seq_disp_extn_present;
 }dec_state_t;
 
 
