@@ -44,6 +44,10 @@
 #include "impeg2d_deinterlace.h"
 
 
+/*****************************************************************************
+* MPEG2 Constants for Parse Check
+******************************************************************************/
+#define MPEG2_MAX_FRAME_RATE_CODE   8
 
 /******************************************************************************
 *  Function Name   : impeg2d_next_start_code
@@ -199,6 +203,10 @@ IMPEG2D_ERROR_CODES_T impeg2d_dec_seq_hdr(dec_state_t *ps_dec)
     /* Frame rate code(4 bits)                                                */
     /*------------------------------------------------------------------------*/
     ps_dec->u2_frame_rate_code = impeg2d_bit_stream_get(ps_stream,4);
+    if (ps_dec->u2_frame_rate_code > MPEG2_MAX_FRAME_RATE_CODE)
+    {
+        return IMPEG2D_FRM_HDR_DECODE_ERR;
+    }
     /*------------------------------------------------------------------------*/
     /* Flush the following as they are not being used                         */
     /* bit_rate_value (18 bits)                                               */
