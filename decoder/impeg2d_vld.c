@@ -638,6 +638,15 @@ IMPEG2D_ERROR_CODES_T impeg2d_vld_decode(
                 u4_sym_len = 17;
                 IBITS_NXT(u4_buf,u4_buf_nxt,u4_offset,u4_bits,u4_sym_len)
 
+                /* There cannot be more than 11 leading zeros in the decoded
+                 * symbol. The symbol is only 17 bits long, so we subtract 15.
+                 */
+                lead_zeros = CLZ(u4_bits) - 15;
+                if (lead_zeros > 11)
+                {
+                    return IMPEG2D_MB_DATA_DECODE_ERR;
+                }
+
                 DecodedValue = gau2_impeg2d_tab_one_1_9[u4_bits >> 8];
                 u4_sym_len = (DecodedValue & 0xf);
                 u4_level = DecodedValue >> 9;
@@ -809,6 +818,14 @@ IMPEG2D_ERROR_CODES_T impeg2d_vld_decode(
                 u4_sym_len = 17;
                 IBITS_NXT(u4_buf, u4_buf_nxt, u4_offset, u4_bits, u4_sym_len)
 
+                /* There cannot be more than 11 leading zeros in the decoded
+                 * symbol. The symbol is only 17 bits long, so we subtract 15.
+                 */
+                lead_zeros = CLZ(u4_bits) - 15;
+                if (lead_zeros > 11)
+                {
+                    return IMPEG2D_MB_DATA_DECODE_ERR;
+                }
 
                 DecodedValue = gau2_impeg2d_tab_zero_1_9[u4_bits >> 8];
                 u4_sym_len = BITS(DecodedValue, 3, 0);
