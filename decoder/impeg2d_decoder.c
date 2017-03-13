@@ -123,7 +123,14 @@ void impeg2d_dec_hdr(void *pv_dec,impeg2d_video_decode_ip_t *ps_ip,
                 if(ps_op->s_ivd_video_decode_op_t.u4_error_code == 0)
                     ps_op->s_ivd_video_decode_op_t.u4_error_code = e_error;
 
+                if (IMPEG2D_UNSUPPORTED_DIMENSIONS == e_error)
+                {
+                    ps_op->s_ivd_video_decode_op_t.u4_num_bytes_consumed = 0;
+                    ps_dec->u2_header_done = 0;
 
+                    ps_op->s_ivd_video_decode_op_t.u4_pic_ht = ps_dec->u2_reinit_max_height;
+                    ps_op->s_ivd_video_decode_op_t.u4_pic_wd = ps_dec->u2_reinit_max_width;
+                }
                 impeg2d_next_code(ps_dec, SEQUENCE_HEADER_CODE);
                 return;
             }
