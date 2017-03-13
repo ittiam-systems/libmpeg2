@@ -189,7 +189,9 @@ IMPEG2D_ERROR_CODES_T impeg2d_dec_seq_hdr(dec_state_t *ps_dec)
                     || (ps_dec->u2_vertical_size > ps_dec->u2_create_max_height))
     {
         IMPEG2D_ERROR_CODES_T e_error = IMPEG2D_UNSUPPORTED_DIMENSIONS;
-        return SET_IVD_FATAL_ERROR(e_error);
+        ps_dec->u2_reinit_max_height   = ps_dec->u2_vertical_size;
+        ps_dec->u2_reinit_max_width    = ps_dec->u2_horizontal_size;
+        return e_error;
     }
 
 
