@@ -655,7 +655,11 @@ IMPEG2D_ERROR_CODES_T impeg2d_vld_decode(
                 {
                     u4_run = ((DecodedValue >> 4) & 0x1f);
                     u4_numCoeffs       += u4_run;
-                    u4_pos             = pu1_scan[u4_numCoeffs++ & 63];
+                    if (u4_numCoeffs >= NUM_COEFFS)
+                    {
+                        return IMPEG2D_MB_TEX_DECODE_ERR;
+                    }
+                    u4_pos             = pu1_scan[u4_numCoeffs++];
                     pu1_pos[*pi4_num_coeffs]    = u4_pos;
 
                     FLUSH_BITS(u4_offset,u4_buf,u4_buf_nxt,u4_sym_len,pu4_buf_aligned)
@@ -701,7 +705,11 @@ IMPEG2D_ERROR_CODES_T impeg2d_vld_decode(
                             u4_level = ((WORD16) DecodedValue) >> 9;
 
                             u4_numCoeffs       += u4_run;
-                            u4_pos             = pu1_scan[u4_numCoeffs++ & 63];
+                            if (u4_numCoeffs >= NUM_COEFFS)
+                            {
+                                return IMPEG2D_MB_TEX_DECODE_ERR;
+                            }
+                            u4_pos             = pu1_scan[u4_numCoeffs++];
                             pu1_pos[*pi4_num_coeffs]    = u4_pos;
                             pi2_outAddr[*pi4_num_coeffs]    = u4_level;
                             (*pi4_num_coeffs)++;
@@ -722,7 +730,11 @@ IMPEG2D_ERROR_CODES_T impeg2d_vld_decode(
                                 u4_level = (u4_level - ((u4_level & 0x0800) << 1));
 
                             u4_numCoeffs       += u4_run;
-                            u4_pos             = pu1_scan[u4_numCoeffs++ & 63];
+                            if (u4_numCoeffs >= NUM_COEFFS)
+                            {
+                                return IMPEG2D_MB_TEX_DECODE_ERR;
+                            }
+                            u4_pos             = pu1_scan[u4_numCoeffs++];
                             pu1_pos[*pi4_num_coeffs]    = u4_pos;
                             pi2_outAddr[*pi4_num_coeffs]    = u4_level;
                             (*pi4_num_coeffs)++;
@@ -785,8 +797,12 @@ IMPEG2D_ERROR_CODES_T impeg2d_vld_decode(
                                 u4_level = (u4_level - (u4_level_first_byte << 1));
                             }
                             u4_numCoeffs += u4_run;
+                            if (u4_numCoeffs >= NUM_COEFFS)
+                            {
+                                return IMPEG2D_MB_TEX_DECODE_ERR;
+                            }
 
-                            u4_pos = pu1_scan[u4_numCoeffs++ & 63];
+                            u4_pos = pu1_scan[u4_numCoeffs++];
 
                             pu1_pos[*pi4_num_coeffs]    = u4_pos;
                             pi2_outAddr[*pi4_num_coeffs]    = u4_level;
@@ -797,11 +813,6 @@ IMPEG2D_ERROR_CODES_T impeg2d_vld_decode(
 
                 u4_nz_cols |= 1 << (u4_pos & 0x7);
                 u4_nz_rows |= 1 << (u4_pos >> 0x3);
-
-                if (u4_numCoeffs > 64)
-                {
-                    return IMPEG2D_MB_TEX_DECODE_ERR;
-                }
 
             }
             IBITS_GET(u4_buf,u4_buf_nxt,u4_offset,u4_bits,pu4_buf_aligned,u4_sym_len)
@@ -836,8 +847,12 @@ IMPEG2D_ERROR_CODES_T impeg2d_vld_decode(
                     u4_run = BITS(DecodedValue, 8,4);
 
                     u4_numCoeffs       += u4_run;
+                    if (u4_numCoeffs >= NUM_COEFFS)
+                    {
+                        return IMPEG2D_MB_TEX_DECODE_ERR;
+                    }
 
-                    u4_pos                 = pu1_scan[u4_numCoeffs++ & 63];
+                    u4_pos                 = pu1_scan[u4_numCoeffs++];
                     pu1_pos[*pi4_num_coeffs]    = u4_pos;
 
                     FLUSH_BITS(u4_offset,u4_buf,u4_buf_nxt,u4_sym_len,pu4_buf_aligned)
@@ -872,8 +887,12 @@ IMPEG2D_ERROR_CODES_T impeg2d_vld_decode(
                             u4_level = ((WORD16) DecodedValue) >> 9;
 
                             u4_numCoeffs       += u4_run;
+                            if (u4_numCoeffs >= NUM_COEFFS)
+                            {
+                                return IMPEG2D_MB_TEX_DECODE_ERR;
+                            }
 
-                            u4_pos                 = pu1_scan[u4_numCoeffs++ & 63];
+                            u4_pos                 = pu1_scan[u4_numCoeffs++];
                             pu1_pos[*pi4_num_coeffs]    = u4_pos;
                             if (1 == lead_zeros)
                                 u4_sym_len--;
@@ -897,8 +916,12 @@ IMPEG2D_ERROR_CODES_T impeg2d_vld_decode(
                                 u4_level = (u4_level - ((u4_level & 0x0800) << 1));
 
                             u4_numCoeffs           += u4_run;
+                            if (u4_numCoeffs >= NUM_COEFFS)
+                            {
+                                return IMPEG2D_MB_TEX_DECODE_ERR;
+                            }
 
-                            u4_pos                 = pu1_scan[u4_numCoeffs++ & 63];
+                            u4_pos                 = pu1_scan[u4_numCoeffs++];
                             pu1_pos[*pi4_num_coeffs]    = u4_pos;
                             pi2_outAddr[*pi4_num_coeffs]    = u4_level;
 
@@ -962,8 +985,12 @@ IMPEG2D_ERROR_CODES_T impeg2d_vld_decode(
                                 u4_level = (u4_level - (u4_level_first_byte << 1));
                             }
                             u4_numCoeffs           += u4_run;
+                            if (u4_numCoeffs >= NUM_COEFFS)
+                            {
+                                return IMPEG2D_MB_TEX_DECODE_ERR;
+                            }
 
-                            u4_pos                 = pu1_scan[u4_numCoeffs++ & 63];
+                            u4_pos                 = pu1_scan[u4_numCoeffs++];
                             pu1_pos[*pi4_num_coeffs]    = u4_pos;
                             pi2_outAddr[*pi4_num_coeffs]    = u4_level;
 
@@ -974,10 +1001,6 @@ IMPEG2D_ERROR_CODES_T impeg2d_vld_decode(
 
                 u4_nz_cols |= 1 << (u4_pos & 0x7);
                 u4_nz_rows |= 1 << (u4_pos >> 0x3);
-                if (u4_numCoeffs > 64)
-                {
-                    return IMPEG2D_MB_TEX_DECODE_ERR;
-                }
 
             }
 
