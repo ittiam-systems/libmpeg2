@@ -152,6 +152,12 @@ IMPEG2D_ERROR_CODES_T impeg2d_dec_seq_hdr(dec_state_t *ps_dec)
     u2_width    = impeg2d_bit_stream_get(ps_stream,12);
     u2_height   = impeg2d_bit_stream_get(ps_stream,12);
 
+    if (0 == u2_width || 0 == u2_height)
+    {
+        IMPEG2D_ERROR_CODES_T e_error = IMPEG2D_FRM_HDR_DECODE_ERR;
+        return e_error;
+    }
+
     if ((u2_width != ps_dec->u2_horizontal_size)
                     || (u2_height != ps_dec->u2_vertical_size))
     {
