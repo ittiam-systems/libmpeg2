@@ -810,6 +810,12 @@ IMPEG2D_ERROR_CODES_T impeg2d_dec_slice(dec_state_t *ps_dec)
     {
         ps_dec->u2_mb_y    = u4_slice_vertical_position;
         ps_dec->u2_mb_x    = 0;
+
+        /* Update the number of MBs left, since we have probably missed a slice
+         * (that's why we see a mismatch between u2_mb_y and current position).
+         */
+        ps_dec->u2_num_mbs_left = (ps_dec->u2_num_vert_mb - ps_dec->u2_mb_y)
+                        * ps_dec->u2_num_horiz_mb;
     }
     ps_dec->u2_first_mb = 1;
 
