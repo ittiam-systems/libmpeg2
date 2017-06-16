@@ -1876,6 +1876,7 @@ IV_API_CALL_STATUS_T impeg2d_api_init(iv_obj_t *ps_dechdl,
 
     ps_dec_state->pv_jobq_buf = ps_mem_rec->pv_base;
     ps_dec_state->i4_jobq_buf_size = ps_mem_rec->u4_mem_size;
+    u4_num_mem_rec++;
     ps_mem_rec++;
 
     if(u4_num_mem_rec > ps_dec_init_ip->s_ivd_init_ip_t.u4_num_mem_rec)
@@ -1891,9 +1892,11 @@ IV_API_CALL_STATUS_T impeg2d_api_init(iv_obj_t *ps_dechdl,
 
 
     ps_dec_state->pv_deinterlacer_ctxt = ps_mem_rec->pv_base;
+    u4_num_mem_rec++;
     ps_mem_rec++;
 
     ps_dec_state->pu1_deint_fmt_buf = ps_mem_rec->pv_base;
+    u4_num_mem_rec++;
     ps_mem_rec++;
 
 
