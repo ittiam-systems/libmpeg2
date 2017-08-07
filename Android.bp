@@ -1,5 +1,7 @@
 cc_library_static {
     name: "libmpeg2dec",
+    vendor_available: true,
+    shared_libs: ["liblog", "libcutils"],
 
     cflags: [
         "-D_LIB",
