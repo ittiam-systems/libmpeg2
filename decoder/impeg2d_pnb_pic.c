@@ -77,6 +77,12 @@ WORD32  impeg2d_dec_p_mb_params(dec_state_t *ps_dec)
     else
     {
         u2_mb_addr_incr = impeg2d_get_mb_addr_incr(ps_stream);
+
+        if(!u2_mb_addr_incr)
+        {
+            return IV_FAIL;
+        }
+
         if(0 == ps_dec->u2_first_mb)
         {
             /****************************************************************/
