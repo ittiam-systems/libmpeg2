@@ -1762,7 +1762,11 @@ IMPEG2D_ERROR_CODES_T impeg2d_process_video_bit_stream(dec_state_t *ps_dec)
                 {
                     return e_error;
                 }
-                impeg2d_pre_pic_dec_proc(ps_dec);
+                e_error = impeg2d_pre_pic_dec_proc(ps_dec);
+                if ((IMPEG2D_ERROR_CODES_T) IVD_ERROR_NONE != e_error)
+                {
+                    return e_error;
+                }
                 impeg2d_dec_pic_data(ps_dec);
                 impeg2d_post_pic_dec_proc(ps_dec);
                 u4_start_code_found = 1;
