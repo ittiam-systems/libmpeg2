@@ -280,6 +280,8 @@ IMPEG2D_ERROR_CODES_T impeg2d_dec_seq_hdr(dec_state_t *ps_dec)
 IMPEG2D_ERROR_CODES_T impeg2d_dec_seq_ext(dec_state_t *ps_dec)
 {
     stream_t *ps_stream;
+    UWORD16 horizontal_value;
+    UWORD16 vertical_value;
 
     ps_stream = &ps_dec->s_bit_stream;
 
@@ -329,11 +331,30 @@ IMPEG2D_ERROR_CODES_T impeg2d_dec_seq_ext(dec_state_t *ps_dec)
     if(impeg2d_bit_stream_get(ps_stream,2) != 0x1)
         return IMPEG2D_CHROMA_FMT_NOT_SUP;
 
+    /* Error resilience: store the 2 most significant bit in horizontal and vertical   */
+    /* variables.Use it only if adding them to the vertical and horizontal sizes       */
+    /* respectively, doesn't exceed the MAX_WD and MAX_HT supported by the application.*/
+
+
     /* Read the 2 most significant bits from horizontal_size */
-    ps_dec->u2_horizontal_size    += (impeg2d_bit_stream_get(ps_stream,2) << 12);
+    horizontal_value               = (impeg2d_bit_stream_get(ps_stream,2) << 12);
 
     /* Read the 2 most significant bits from vertical_size */
-    ps_dec->u2_vertical_size      += (impeg2d_bit_stream_get(ps_stream,2) << 12);
+    vertical_value                 = (impeg2d_bit_stream_get(ps_stream,2) << 12);
+
+    /* Error resilience: The height and width should not be more than the*/
+    /*max height and width the application can support*/
+    if(ps_dec->u2_create_max_height < (ps_dec->u2_vertical_size + vertical_value))
+    {
+        return (IMPEG2D_ERROR_CODES_T) IVD_STREAM_WIDTH_HEIGHT_NOT_SUPPORTED;
+    }
+
+    if(ps_dec->u2_create_max_width < (ps_dec->u2_horizontal_size + horizontal_value))
+    {
+        return (IMPEG2D_ERROR_CODES_T) IVD_STREAM_WIDTH_HEIGHT_NOT_SUPPORTED;
+    }
+    ps_dec->u2_vertical_size       += vertical_value;
+    ps_dec->u2_horizontal_size     += horizontal_value;
 
     /*-----------------------------------------------------------------------*/
     /* Flush the following as they are not used now                          */
