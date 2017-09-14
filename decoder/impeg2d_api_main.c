@@ -428,7 +428,11 @@ void impeg2d_fill_mem_rec(impeg2d_fill_mem_rec_ip_t *ps_ip,
     UWORD32 u4_deinterlace;
     UNUSED(u4_deinterlace);
     max_frm_width = ALIGN16(ps_ip->s_ivd_fill_mem_rec_ip_t.u4_max_frm_wd);
-    max_frm_height = ALIGN16(ps_ip->s_ivd_fill_mem_rec_ip_t.u4_max_frm_ht);
+    /* In error clips with field prediction, the mv may incorrectly refer to
+    * the last MB row, causing an out of bounds read access. Allocating 8 extra
+    * rows to handle this. Adding another extra row to handle half_y prediction.
+    */
+    max_frm_height = ALIGN32(ps_ip->s_ivd_fill_mem_rec_ip_t.u4_max_frm_ht) + 9;
 
     max_frm_size = (max_frm_width * max_frm_height * 3) >> 1;/* 420 P */
 
