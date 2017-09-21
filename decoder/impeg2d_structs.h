@@ -20,6 +20,8 @@
 #ifndef __IMPEG2D_STRUCTS_H__
 #define __IMPEG2D_STRUCTS_H__
 
+#define MIN_BUFFER_BYTES_AT_EOS 8
+
 typedef enum
 {
     CMD_PROCESS,
