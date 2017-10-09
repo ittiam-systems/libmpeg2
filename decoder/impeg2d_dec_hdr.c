@@ -944,7 +944,7 @@ void impeg2d_dec_pic_data_thread(dec_state_t *ps_dec)
                 {
                     pu1_buf = ps_dec->pu1_inp_bits_buf + s_job.i4_bistream_ofst;
                     impeg2d_bit_stream_init(&(ps_dec->s_bit_stream), pu1_buf,
-                            (ps_dec->u4_num_inp_bytes - s_job.i4_bistream_ofst) + 8);
+                            (ps_dec->u4_num_inp_bytes - s_job.i4_bistream_ofst));
                     i4_cur_row      = s_job.i2_start_mb_y;
                     ps_dec->i4_start_mb_y = s_job.i2_start_mb_y;
                     ps_dec->i4_end_mb_y = s_job.i2_end_mb_y;
