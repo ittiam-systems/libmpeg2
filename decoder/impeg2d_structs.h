@@ -40,6 +40,7 @@ Because of temporal dependency in deinterlacer one additional buffer is also nee
 #define DEC_ORDER               0
 
 #define MAX_BITSTREAM_BUFFER_SIZE       2000 * 1024
+#define MIN_BUFFER_BYTES_AT_EOS 8
 
 /* Flag to signal that buffer is held by deinterlacing */
 #define MPEG2_BUF_MGR_DEINT (BUF_MGR_DISP << 1)
