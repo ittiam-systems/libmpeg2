@@ -331,6 +331,9 @@ typedef struct dec_state_struct_t
     UWORD8          *pu1_chroma_ref_buf[BUF_MGR_MAX_CNT];
     ivd_out_bufdesc_t as_disp_buffers[BUF_MGR_MAX_CNT];
 
+    /* Count the number of pictures decoded after init/reset */
+    WORD32          i4_pic_count;
+
     /* Flag to signal last coeff in a 8x8 block is one
     after mismatch contol */
     WORD32          i4_last_value_one;
