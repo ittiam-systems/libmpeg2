@@ -1026,6 +1026,7 @@ IV_API_CALL_STATUS_T impeg2d_api_reset(iv_obj_t *ps_dechdl,
 
             ps_dec_state->u2_header_done    = 0;  /* Header decoding not done */
             ps_dec_state->u4_frm_buf_stride = 0;
+            ps_dec_state->i4_pic_count      = 0;
             ps_dec_state->u2_is_mpeg2       = 0;
             ps_dec_state->aps_ref_pics[0] = NULL;
             ps_dec_state->aps_ref_pics[1] = NULL;

@@ -122,6 +122,33 @@ WORD32  impeg2d_dec_p_mb_params(dec_state_t *ps_dec)
 
             impeg2d_dec_skip_mbs(ps_dec, (UWORD16)(u2_mb_addr_incr - 1));
         }
+        else
+        {
+
+            /****************************************************************/
+            /* Section 6.3.17                                               */
+            /* The first MB of a slice cannot be skipped                    */
+            /* But the mb_addr_incr can be > 1, because at the beginning of */
+            /* a slice, it indicates the offset from the last MB in the     */
+            /* previous row. Hence for the first slice in a row, the        */
+            /* mb_addr_incr needs to be 1.                                  */
+            /****************************************************************/
+            /* MB_x is set to zero whenever MB_y changes.                   */
+            ps_dec->u2_mb_x = u2_mb_addr_incr - 1;
+            /* For error resilience */
+            ps_dec->u2_mb_x = MIN(ps_dec->u2_mb_x, (ps_dec->u2_num_horiz_mb - 1));
+            ps_dec->u2_num_mbs_left = ((ps_dec->u2_num_vert_mb - ps_dec->u2_mb_y)
+                            * ps_dec->u2_num_horiz_mb) - ps_dec->u2_mb_x;
+
+            /****************************************************************/
+            /* mb_addr_incr is forced to 1 because in this decoder it is used */
+            /* more as an indicator of the number of MBs skipped than the   */
+            /* as defined by the standard (Section 6.3.17)                  */
+            /****************************************************************/
+            u2_mb_addr_incr = 1;
+            ps_dec->u2_first_mb = 0;
+
+        }
 
     }
     u4_next_word = (UWORD16)impeg2d_bit_stream_nxt(ps_stream,16);
@@ -286,6 +313,8 @@ WORD32 impeg2d_dec_pnb_mb_params(dec_state_t *ps_dec)
             ps_dec->u2_mb_x = u2_mb_addr_incr - 1;
             /* For error resilience */
             ps_dec->u2_mb_x = MIN(ps_dec->u2_mb_x, (ps_dec->u2_num_horiz_mb - 1));
+            ps_dec->u2_num_mbs_left = ((ps_dec->u2_num_vert_mb - ps_dec->u2_mb_y)
+                            * ps_dec->u2_num_horiz_mb) - ps_dec->u2_mb_x;
 
             /****************************************************************/
             /* mb_addr_incr is forced to 1 because in this decoder it is used */
