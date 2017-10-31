@@ -711,6 +711,11 @@ IMPEG2D_ERROR_CODES_T impeg2d_dec_pic_hdr(dec_state_t *ps_dec)
 
     if(ps_dec->u2_is_mpeg2 == 0)
     {
+        if (ps_dec->u2_forw_f_code < 1 || ps_dec->u2_forw_f_code > 7 ||
+                        ps_dec->u2_back_f_code < 1 || ps_dec->u2_back_f_code > 7)
+        {
+            return IMPEG2D_UNKNOWN_ERROR;
+        }
         ps_dec->au2_f_code[0][0] = ps_dec->au2_f_code[0][1] = ps_dec->u2_forw_f_code;
         ps_dec->au2_f_code[1][0] = ps_dec->au2_f_code[1][1] = ps_dec->u2_back_f_code;
     }
