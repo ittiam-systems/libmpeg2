@@ -1015,23 +1015,30 @@ void impeg2d_dec_pic_data_thread(dec_state_t *ps_dec)
 
             if(i4_continue_decode)
             {
-                /* If the slice is from the same row, then continue decoding without dequeue */
-                if((temp - 1) == i4_cur_row)
+                if (0 != ps_dec->u2_num_mbs_left)
                 {
-                    i4_dequeue_job = 0;
-                    break;
-                }
-
-                if(temp < ps_dec->i4_end_mb_y)
-                {
-                    i4_cur_row = ps_dec->u2_mb_y;
+                    /* If the slice is from the same row, then continue decoding without dequeue */
+                    if((temp - 1) == i4_cur_row)
+                    {
+                        i4_dequeue_job = 0;
+                    }
+                    else
+                    {
+                        if(temp < ps_dec->i4_end_mb_y)
+                        {
+                            i4_cur_row = ps_dec->u2_mb_y;
+                        }
+                        else
+                        {
+                            i4_dequeue_job = 1;
+                        }
+                    }
                 }
                 else
                 {
                     i4_dequeue_job = 1;
                 }
                 break;
-
             }
             else
                 break;
