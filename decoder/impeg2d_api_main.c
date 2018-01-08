@@ -824,7 +824,8 @@ IV_API_CALL_STATUS_T impeg2d_api_get_buf_info(iv_obj_t *ps_dechdl,
     {
         u4_stride = ps_dec_state->u4_frm_buf_stride;
     }
-    u4_height = ((ps_dec_state->u2_frame_height + 15) >> 4) << 4;
+    u4_stride = ALIGN16(u4_stride);
+    u4_height = ALIGN32(ps_dec_state->u2_frame_height) + 9;
 
     if(ps_dec_state->i4_chromaFormat == IV_YUV_420P)
     {
