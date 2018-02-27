@@ -3484,6 +3484,7 @@ IV_API_CALL_STATUS_T impeg2d_api_entity(iv_obj_t *ps_dechdl,
                 /*************************************************************************/
                 /*                              Frame Decode                             */
                 /*************************************************************************/
+                ps_dec_state->u4_inp_ts = ps_dec_ip->s_ivd_video_decode_ip_t.u4_ts;
 
                 impeg2d_dec_frm(ps_dec_state,ps_dec_ip,ps_dec_op);
 
