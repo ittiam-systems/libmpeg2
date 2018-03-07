@@ -647,7 +647,11 @@ void impeg2d_fill_mem_rec(impeg2d_fill_mem_rec_ip_t *ps_ip,
         }
     }
 
-
+    ps_mem_rec->u4_mem_alignment = 128;
+    ps_mem_rec->e_mem_type       = IV_EXTERNAL_CACHEABLE_PERSISTENT_MEM;
+    ps_mem_rec->u4_mem_size      = MAX_BITSTREAM_BUFFER_SIZE + MIN_BUFFER_BYTES_AT_EOS;
+    ps_mem_rec++;
+    u1_no_rec++;
 
     {
         WORD32 i4_job_queue_size;
@@ -693,6 +697,7 @@ void impeg2d_fill_mem_rec(impeg2d_fill_mem_rec_ip_t *ps_ip,
     ps_mem_rec->u4_mem_size      = sizeof(iv_mem_rec_t) * (NUM_MEM_RECORDS);
     ps_mem_rec++;
     u1_no_rec++;
+
     ps_op->s_ivd_fill_mem_rec_op_t.u4_num_mem_rec_filled = u1_no_rec;
     ps_op->s_ivd_fill_mem_rec_op_t.u4_error_code = 0;
 }
@@ -1963,6 +1968,9 @@ IV_API_CALL_STATUS_T impeg2d_api_init(iv_obj_t *ps_dechdl,
 
     ps_dec_state = ps_dec_state_multi_core->ps_dec_state[0];
 
+    ps_dec_state->pu1_input_buffer = ps_mem_rec->pv_base;
+    u4_num_mem_rec++;
+    ps_mem_rec++;
 
     ps_dec_state->pv_jobq_buf = ps_mem_rec->pv_base;
     ps_dec_state->i4_jobq_buf_size = ps_mem_rec->u4_mem_size;
