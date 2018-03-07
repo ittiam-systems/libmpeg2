@@ -342,6 +342,9 @@ typedef struct dec_state_struct_t
     WORD32          i4_start_mb_y;
     WORD32          i4_end_mb_y;
 
+    /* Buffer to store the input stream */
+    UWORD8 *pu1_input_buffer;
+
     /**
      * Job queue buffer base
      */
