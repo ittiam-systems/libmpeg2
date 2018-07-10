@@ -210,6 +210,13 @@ cc_library_static {
             ],
         },
     },
+    sanitize: {
+        integer_overflow: true,
+        diag: {
+            integer_overflow: true,
+        },
+        blacklist: "libmpeg2dec_blacklist.txt",
+    },
 }
 
 subdirs = ["test"]
