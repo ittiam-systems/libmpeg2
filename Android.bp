@@ -212,8 +212,10 @@ cc_library_static {
     },
     sanitize: {
         integer_overflow: true,
+        misc_undefined: ["bounds"],
         diag: {
             integer_overflow: true,
+            misc_undefined: ["bounds"],
         },
         blacklist: "libmpeg2dec_blacklist.txt",
     },
