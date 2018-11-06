@@ -218,6 +218,8 @@ cc_library_static {
             misc_undefined: ["bounds"],
             no_recover: ["bounds", "integer"],
         },
+        // Enable CFI if this becomes a shared library.
+        // cfi: true,
         blacklist: "libmpeg2dec_blacklist.txt",
     },
 }
