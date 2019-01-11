@@ -3,3 +3,5 @@ fun:impeg2d_dec_pic_disp_ext
 # decoder/impeg2d_vld.c:1221:13: runtime error: unsigned integer overflow: 248 + 4294967284 cannot be represented in type 'unsigned int'
 fun:impeg2d_inv_quant_mpeg2
 
+# Performance related
+fun:impeg2d_set_mc_params
