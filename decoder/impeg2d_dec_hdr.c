@@ -19,7 +19,7 @@
 */
 #include <string.h>
 #ifdef __ANDROID__
-#include <cutils/log.h>
+#include <log/log.h>
 #endif
 #include "iv_datatypedef.h"
 #include "iv.h"
