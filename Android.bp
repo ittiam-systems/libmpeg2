@@ -213,11 +213,6 @@ cc_library_static {
     sanitize: {
         integer_overflow: true,
         misc_undefined: ["bounds"],
-        diag: {
-            integer_overflow: true,
-            misc_undefined: ["bounds"],
-            no_recover: ["bounds", "integer"],
-        },
         // Enable CFI if this becomes a shared library.
         // cfi: true,
         blacklist: "libmpeg2dec_blacklist.txt",
