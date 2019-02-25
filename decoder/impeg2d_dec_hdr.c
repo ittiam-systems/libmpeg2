@@ -762,6 +762,8 @@ IMPEG2D_ERROR_CODES_T impeg2d_dec_pic_hdr(dec_state_t *ps_dec)
 *******************************************************************************/
 IMPEG2D_ERROR_CODES_T impeg2d_dec_pic_coding_ext(dec_state_t *ps_dec)
 {
+
+    UWORD32 u4_val;
     stream_t *ps_stream;
     IMPEG2D_ERROR_CODES_T e_error = (IMPEG2D_ERROR_CODES_T) IV_SUCCESS;
 
@@ -770,10 +772,26 @@ IMPEG2D_ERROR_CODES_T impeg2d_dec_pic_coding_ext(dec_state_t *ps_dec)
     /* extension code identifier */
     impeg2d_bit_stream_get(ps_stream,4);
 
-    ps_dec->au2_f_code[0][0]             = impeg2d_bit_stream_get(ps_stream,4);
-    ps_dec->au2_f_code[0][1]             = impeg2d_bit_stream_get(ps_stream,4);
-    ps_dec->au2_f_code[1][0]             = impeg2d_bit_stream_get(ps_stream,4);
-    ps_dec->au2_f_code[1][1]             = impeg2d_bit_stream_get(ps_stream,4);
+    u4_val = impeg2d_bit_stream_get(ps_stream,4);
+    if(u4_val == 0)
+        return IMPEG2D_UNKNOWN_ERROR;
+    ps_dec->au2_f_code[0][0]             = u4_val;
+
+    u4_val = impeg2d_bit_stream_get(ps_stream,4);
+    if(u4_val == 0)
+        return IMPEG2D_UNKNOWN_ERROR;
+    ps_dec->au2_f_code[0][1]             = u4_val;
+
+    u4_val = impeg2d_bit_stream_get(ps_stream,4);
+    if(u4_val == 0)
+        return IMPEG2D_UNKNOWN_ERROR;
+    ps_dec->au2_f_code[1][0]             = u4_val;
+
+    u4_val = impeg2d_bit_stream_get(ps_stream,4);
+    if(u4_val == 0)
+        return IMPEG2D_UNKNOWN_ERROR;
+    ps_dec->au2_f_code[1][1]             = u4_val;
+
     ps_dec->u2_intra_dc_precision        = impeg2d_bit_stream_get(ps_stream,2);
     ps_dec->u2_picture_structure            = impeg2d_bit_stream_get(ps_stream,2);
     if (ps_dec->u2_picture_structure < TOP_FIELD ||
