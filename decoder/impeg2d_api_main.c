@@ -1087,18 +1087,7 @@ IV_API_CALL_STATUS_T impeg2d_api_set_params(iv_obj_t *ps_dechdl,void *pv_api_ip,
 
     if(ps_ctl_dec_ip->s_ivd_ctl_set_config_ip_t.u4_disp_wd != 0)
     {
-        if(ps_dec_state->u2_header_done == 1)
-        {
-            if (ps_ctl_dec_ip->s_ivd_ctl_set_config_ip_t.u4_disp_wd > ps_dec_state->u2_frame_width)
-            {
-                ps_dec_state->u4_frm_buf_stride = ps_ctl_dec_ip->s_ivd_ctl_set_config_ip_t.u4_disp_wd;
-            }
-        }
-        else
-        {
-            ps_dec_state->u4_frm_buf_stride = ps_ctl_dec_ip->s_ivd_ctl_set_config_ip_t.u4_disp_wd;
-        }
-
+        ps_dec_state->u4_frm_buf_stride = ps_ctl_dec_ip->s_ivd_ctl_set_config_ip_t.u4_disp_wd;
     }
     else
     {
