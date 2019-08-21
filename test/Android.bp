@@ -1,6 +1,6 @@
 cc_binary {
     name: "mpeg2dec",
-
+    host_supported:true,
     cflags: [
         "-DPROFILE_ENABLE",
         "-DMD5_DISABLE",
