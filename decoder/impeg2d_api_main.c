@@ -90,7 +90,7 @@
 #define CODEC_RELEASE_VER       "01.00"
 #define CODEC_VENDOR            "ITTIAM"
 
-#ifdef __ANDROID__
+#ifdef ANDROID
 #define VERSION(version_string, codec_name, codec_release_type, codec_release_ver, codec_vendor)    \
     strcpy(version_string,"@(#)Id:");                                                               \
     strcat(version_string,codec_name);                                                              \
