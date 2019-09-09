@@ -13,4 +13,9 @@ cc_test {
     srcs: ["decoder/main.c"],
     static_libs: ["libmpeg2dec"],
     shared_libs: ["liblog"],
+    target: {
+        darwin: {
+            enabled: false,
+        },
+    },
 }
