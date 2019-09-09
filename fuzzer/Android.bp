@@ -8,4 +8,9 @@ cc_fuzz {
         "libmpeg2dec",
         "liblog",
     ],
+    target: {
+        darwin: {
+            enabled: false,
+        },
+    },
 }
