@@ -129,24 +129,6 @@ cc_library_static {
             ],
         },
 
-        mips: {
-            local_include_dirs: ["common/mips"],
-
-            srcs: [
-                "decoder/mips/impeg2d_function_selector.c",
-                "common/mips/ideint_function_selector.c",
-            ],
-        },
-
-        mips64: {
-            local_include_dirs: ["common/mips"],
-
-            srcs: [
-                "decoder/mips/impeg2d_function_selector.c",
-                "common/mips/ideint_function_selector.c",
-            ],
-        },
-
         x86: {
             cflags: [
                 "-DX86",
