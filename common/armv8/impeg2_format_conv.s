@@ -185,6 +185,10 @@ yuv420sp_uv_chroma:
 
     ldr             w8, [sp, #104]      //// Load u2_dest_stride_uv from stack
     sxtw            x8, w8
+    add             x6, x6, 1
+    bic             x6, x6, #1
+
+    add             x9, x9, 1
 
     sub             x7, x7, x6, lsr #1  //// Source increment
 
@@ -358,6 +362,11 @@ yuv420sp_vu_chroma:
 
     ldr             w8, [sp, #104]      //// Load u2_dest_stride_uv from stack
     sxtw            x8, w8
+
+    add             x6, x6, 1
+    bic             x6, x6, #1
+
+    add             x9, x9, 1
 
     sub             x7, x7, x6, lsr #1  //// Source increment
 
