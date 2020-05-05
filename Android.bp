@@ -200,6 +200,11 @@ cc_library_static {
         // cfi: true,
         blacklist: "libmpeg2dec_blacklist.txt",
     },
+    apex_available: [
+        "//apex_available:platform",
+        "com.android.media.swcodec",
+    ],
+    min_sdk_version: "29",
 }
 
 subdirs = ["test"]
