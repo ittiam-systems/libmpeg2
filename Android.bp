@@ -198,7 +198,7 @@ cc_library_static {
         misc_undefined: ["bounds"],
         // Enable CFI if this becomes a shared library.
         // cfi: true,
-        blacklist: "libmpeg2dec_blacklist.txt",
+        blocklist: "libmpeg2dec_blocklist.txt",
     },
     apex_available: [
         "//apex_available:platform",
