@@ -121,7 +121,7 @@ void impeg2d_format_convert(dec_state_t *ps_dec,
         if(1 == ps_dec->u4_share_disp_buf)
             convert_uv_only = 1;
 
-        if(pu1_src_y == pu1_dst_y)
+        if(ps_src_pic->pu1_y == ps_disp_frm_buf->pv_y_buf)
             convert_uv_only = 1;
 
         if(ps_dec->i4_chromaFormat == IV_YUV_420SP_UV)

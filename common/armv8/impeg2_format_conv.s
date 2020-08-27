@@ -136,6 +136,7 @@ impeg2_fmt_conv_yuv420p_to_yuv420sp_uv_av8:
     ldr             w14, [sp, #112]     //// Load convert_uv_only
 
     cmp             w14, #1
+    mov             x9,  x5
     beq             yuv420sp_uv_chroma
     ///* Do the preprocessing before the main loops start */
     //// Load the parameters from stack
@@ -195,7 +196,7 @@ yuv420sp_uv_chroma:
     sub             x8, x8, x6          //// Destination increment
 
     lsr             x6, x6, #1
-    lsr             x5, x5, #1
+    lsr             x5, x9, #1
 yuv420sp_uv_row_loop_uv:
     mov             x16, x6
 
@@ -312,6 +313,7 @@ impeg2_fmt_conv_yuv420p_to_yuv420sp_vu_av8:
     ldr             w14, [sp, #112]     //// Load convert_uv_only
 
     cmp             w14, #1
+    mov             x9,  x5
     beq             yuv420sp_vu_chroma
 
     ///* Do the preprocessing before the main loops start */
@@ -373,7 +375,7 @@ yuv420sp_vu_chroma:
     sub             x8, x8, x6          //// Destination increment
 
     lsr             x6, x6, #1
-    lsr             x5, x5, #1
+    lsr             x5, x9, #1
 yuv420sp_vu_row_loop_uv:
     mov             x16, x6
 
