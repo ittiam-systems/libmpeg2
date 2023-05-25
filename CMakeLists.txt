@@ -1,7 +1,13 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.9.1)
+project(libmpeg2 C CXX)
+enable_language(ASM)
 
 set(MPEG2_ROOT "${CMAKE_CURRENT_SOURCE_DIR}")
 set(MPEG2_CONFIG_DIR "${CMAKE_CURRENT_BINARY_DIR}")
+
+set(CMAKE_C_COMPILER clang)
+set(CMAKE_CXX_COMPILER clang++)
+set(CMAKE_BUILD_TYPE Debug)
 
 if("${MPEG2_ROOT}" STREQUAL "${MPEG2_CONFIG_DIR}")
   message(
@@ -93,3 +99,10 @@ add_executable(mpeg2dec ${MPEG2DEC_SRCS})
 set_target_properties(mpeg2dec
                       PROPERTIES COMPILE_FLAGS "-DMD5_DISABLE -DPROFILE_ENABLE")
 target_link_libraries(mpeg2dec libmpeg2dec Threads::Threads)
+
+include("${MPEG2_ROOT}/cmake/utils.cmake")
+libmpeg2_add_compile_options()
+libmpeg2_add_definitions()
+libmpeg2_set_link_libraries()
+
+libmpeg2_add_fuzzer(mpeg2_dec_fuzzer libmpeg2dec SOURCES ${MPEG2_ROOT}/fuzzer/mpeg2_dec_fuzzer.cpp)
