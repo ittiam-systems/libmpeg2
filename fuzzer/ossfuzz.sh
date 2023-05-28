@@ -31,20 +31,9 @@ mkdir -p ${build_dir}
 pushd ${build_dir}
 
 cmake $SRC/libmpeg2
-make -j$(nproc)
+make -j$(nproc) mpeg2_dec_fuzzer
+cp ${build_dir}/mpeg2_dec_fuzzer $OUT/
 popd
-
-# build fuzzers
-$CXX $CXXFLAGS -std=c++11 \
--I$SRC/libmpeg2 \
--I$SRC/libmpeg2/common \
--I$SRC/libmpeg2/decoder \
--I${build_dir} \
--Wl,--start-group \
-$LIB_FUZZING_ENGINE \
-$SRC/libmpeg2/fuzzer/mpeg2_dec_fuzzer.cpp -o $OUT/mpeg2_dec_fuzzer \
-${build_dir}/libmpeg2dec.a \
--Wl,--end-group
 
 cp $SRC/mpeg2_dec_fuzzer_seed_corpus.zip $OUT/mpeg2_dec_fuzzer_seed_corpus.zip
 cp $SRC/libmpeg2/fuzzer/mpeg2_dec_fuzzer.dict $OUT/mpeg2_dec_fuzzer.dict
