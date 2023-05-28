@@ -20,12 +20,10 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 set(CMAKE_STATIC_LIBRARY_PREFIX "")
 
-if(SANITIZE)
-  string(TOLOWER ${SANITIZE} SANITIZE)
-
-  set(CMAKE_SANITIZER_C_FLAGS "-fno-omit-frame-pointer -fsanitize=${SANITIZE}")
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${CMAKE_SANITIZER_C_FLAGS}")
-endif()
+include("${MPEG2_ROOT}/cmake/utils.cmake")
+libmpeg2_add_compile_options()
+libmpeg2_add_definitions()
+libmpeg2_set_link_libraries()
 
 list(APPEND LIBMPEG2DEC_SRCS
             "${MPEG2_ROOT}/common/impeg2_buf_mgr.c"
@@ -89,16 +87,7 @@ add_library(libmpeg2dec ${LIBMPEG2DEC_SRCS} ${LIBMPEG2DEC_X86_SRCS})
 set_target_properties(libmpeg2dec
                       PROPERTIES COMPILE_FLAGS "${LIBMPEG2DEC_C_FLAGS}")
 
-list(APPEND MPEG2DEC_SRCS "${MPEG2_ROOT}/test/decoder/main.c")
-
-add_executable(mpeg2dec ${MPEG2DEC_SRCS})
-set_target_properties(mpeg2dec
-                      PROPERTIES COMPILE_FLAGS "-DMD5_DISABLE -DPROFILE_ENABLE")
-target_link_libraries(mpeg2dec libmpeg2dec Threads::Threads)
-
-include("${MPEG2_ROOT}/cmake/utils.cmake")
-libmpeg2_add_compile_options()
-libmpeg2_add_definitions()
-libmpeg2_set_link_libraries()
+libmpeg2_add_executable(mpeg2dec libmpeg2dec SOURCES ${MPEG2_ROOT}/test/decoder/main.c)
+target_compile_definitions(mpeg2dec PRIVATE PROFILE_ENABLE MD5_DISABLE)
 
 libmpeg2_add_fuzzer(mpeg2_dec_fuzzer libmpeg2dec SOURCES ${MPEG2_ROOT}/fuzzer/mpeg2_dec_fuzzer.cpp)
