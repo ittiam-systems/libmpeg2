@@ -206,6 +206,11 @@ typedef struct
      */
     UWORD32 u4_deinterlace;
 
+    /**
+     * enabling threads
+    */
+    UWORD32 u4_keep_threads_active;
+
 } impeg2d_fill_mem_rec_ip_t;
 
 typedef struct
@@ -242,6 +247,11 @@ typedef struct
      * Flag to enable/disable deinterlacing
      */
     UWORD32 u4_deinterlace;
+
+    /**
+     * enable_threads
+     */
+    UWORD32 u4_keep_threads_active;
 
 } impeg2d_init_ip_t;
 

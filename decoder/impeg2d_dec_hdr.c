@@ -945,34 +945,34 @@ void impeg2d_dec_pic_data_thread(dec_state_t *ps_dec)
     UWORD32 u4_bits_read;
     WORD32 i4_dequeue_job;
     IMPEG2D_ERROR_CODES_T e_error;
-#ifdef KEEP_THREADS_ACTIVE
+
     UWORD32 id = ps_dec->currThreadId;
     dec_state_multi_core_t *ps_dec_state_multi_core = ps_dec->ps_dec_state_multi_core;
-#endif
 
     while (1)
     {
-#ifdef KEEP_THREADS_ACTIVE
-        if(id != 0)
+        if(ps_dec->i4_threads_active)
         {
-            e_error = ithread_mutex_lock(ps_dec->pv_proc_start_mutex);
-            if((IMPEG2D_ERROR_CODES_T)IV_SUCCESS != e_error)
-                break;
-
-            while(!ps_dec->ai4_process_start)
+            if(id != 0)
             {
-                ithread_cond_wait(ps_dec->pv_proc_start_condition,
-                                  ps_dec->pv_proc_start_mutex);
+                e_error = ithread_mutex_lock(ps_dec->pv_proc_start_mutex);
+                if((IMPEG2D_ERROR_CODES_T)IV_SUCCESS != e_error)
+                    break;
+
+                while(!ps_dec->ai4_process_start)
+                {
+                    ithread_cond_wait(ps_dec->pv_proc_start_condition,
+                                      ps_dec->pv_proc_start_mutex);
+                }
+                ps_dec->ai4_process_start = 0;
+                e_error = ithread_mutex_unlock(ps_dec->pv_proc_start_mutex);
+                if((IMPEG2D_ERROR_CODES_T)IV_SUCCESS != e_error)
+                    break;
+                // break off at the end of decoding all the frames
+                if(ps_dec_state_multi_core->i4_break_threads)
+                    break;
             }
-            ps_dec->ai4_process_start = 0;
-            e_error = ithread_mutex_unlock(ps_dec->pv_proc_start_mutex);
-            if((IMPEG2D_ERROR_CODES_T)IV_SUCCESS != e_error)
-                break;
-            // break off at the end of decoding all the frames
-            if(ps_dec_state_multi_core->i4_break_threads)
-                break;
         }
-#endif
         i4_cur_row = ps_dec->u2_mb_y + 1;
 
         i4_continue_decode = 1;
@@ -1155,27 +1155,30 @@ void impeg2d_dec_pic_data_thread(dec_state_t *ps_dec)
                 }
             }
         }
-#ifdef KEEP_THREADS_ACTIVE
-        if(id != 0)
+        if(ps_dec->i4_threads_active)
         {
-            e_error = ithread_mutex_lock(ps_dec->pv_proc_done_mutex);
-            if((IMPEG2D_ERROR_CODES_T)IV_SUCCESS != e_error)
-                break;
+            if(id != 0)
+            {
+                e_error = ithread_mutex_lock(ps_dec->pv_proc_done_mutex);
+                if((IMPEG2D_ERROR_CODES_T)IV_SUCCESS != e_error)
+                    break;
 
-            ps_dec->ai4_process_done = 1;
-            ithread_cond_signal(ps_dec->pv_proc_done_condition);
+                ps_dec->ai4_process_done = 1;
+                ithread_cond_signal(ps_dec->pv_proc_done_condition);
 
-            e_error = ithread_mutex_unlock(ps_dec->pv_proc_done_mutex);
-            if((IMPEG2D_ERROR_CODES_T)IV_SUCCESS != e_error)
+                e_error = ithread_mutex_unlock(ps_dec->pv_proc_done_mutex);
+                if((IMPEG2D_ERROR_CODES_T)IV_SUCCESS != e_error)
+                    break;
+            }
+            else
+            {
                 break;
+            }
         }
         else
         {
             break;
         }
-#else
-        break;
-#endif
     }
 }
 
