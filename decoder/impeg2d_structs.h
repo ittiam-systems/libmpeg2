@@ -316,7 +316,6 @@ typedef struct dec_state_struct_t
 
     void            *pv_codec_thread_handle;
     void            *ps_dec_state_multi_core;
-#ifdef KEEP_THREADS_ACTIVE
     UWORD32         currThreadId;
     /**
      * Condition variable to signal process start
@@ -347,7 +346,6 @@ typedef struct dec_state_struct_t
      * Process state end- One for each thread
      */
     WORD32 ai4_process_done;
-#endif
     UWORD32         u4_inp_ts;
     pic_buf_t       *ps_cur_pic;
     pic_buf_t       *ps_disp_pic;
@@ -423,6 +421,9 @@ typedef struct dec_state_struct_t
 
     /** Flag to indicate if Seq Display Extn is present */
     UWORD8          u1_seq_disp_extn_present;
+
+    /** Keeps thread active*/
+    UWORD8          i4_threads_active;
 }dec_state_t;
 
 
@@ -455,12 +456,10 @@ typedef struct _dec_state_multi_core
     // and start decoding
     UWORD32     au4_row_offset[MAX_MB_ROWS];
     volatile    UWORD32 u4_row_offset_cnt;
-#ifdef KEEP_THREADS_ACTIVE
     /**
      * Flag to signal processing thread to exit
      */
     WORD32 i4_break_threads;
-#endif
 }dec_state_multi_core_t;
 
 

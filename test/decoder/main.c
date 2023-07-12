@@ -219,6 +219,9 @@ typedef struct
     WORD32  quit;
     WORD32  paused;
 
+    /* Keep threads active*/
+    WORD32 i4_keep_threads_active;
+
 
     void *pv_disp_ctx;
     void *display_thread_handle;
@@ -270,6 +273,7 @@ typedef enum
     SOC,
     PICLEN,
     PICLEN_FILE,
+    KEEP_THREADS_ACTIVE,
 }ARGUMENT_T;
 
 typedef struct
@@ -331,6 +335,8 @@ static const argument_t argument_mapping[] =
         "Set Architecture. Supported values  ARM_NONEON, ARM_A9Q, ARM_A7, ARM_A5, ARM_NEONINTR, X86_GENERIC, X86_SSSE3, X86_SSE4 \n" },
     { "--",  "--soc", SOC,
         "Set SOC. Supported values  GENERIC, HISI_37X \n" },
+    { "--", "--keep_threads_active", KEEP_THREADS_ACTIVE,
+        "keep threads active" },
 
 #if 0
     { "--",  "--degrade_type",  DEGRADE_TYPE,
@@ -1322,6 +1328,10 @@ void parse_argument(vid_dec_ctx_t *ps_app_ctx, CHAR *argument, CHAR *value)
             sscanf(value, "%s", ps_app_ctx->ac_piclen_fname);
             break;
 
+        case KEEP_THREADS_ACTIVE:
+            sscanf(value, "%d", &ps_app_ctx->i4_keep_threads_active);
+            break;
+
         case INVALID:
         default:
             printf("Ignoring argument :  %s\n", argument);
@@ -1879,6 +1889,8 @@ int main(WORD32 argc, CHAR *argv[])
 
     s_app_ctx.get_color_fmt = &default_get_color_fmt;
 
+    s_app_ctx.i4_keep_threads_active = 0;
+
     /* Set function pointers for display */
 #ifdef SDL_DISPLAY
     s_app_ctx.disp_init = &sdl_disp_init;
@@ -2130,6 +2142,7 @@ int main(WORD32 argc, CHAR *argv[])
                             (s_app_ctx.max_ht == 0) ? MAX_FRAME_HEIGHT : s_app_ctx.max_ht;
             s_fill_mem_rec_ip.u4_share_disp_buf = s_app_ctx.share_disp_buf;
             s_fill_mem_rec_ip.u4_deinterlace = s_app_ctx.deinterlace;
+            s_fill_mem_rec_ip.u4_keep_threads_active = s_app_ctx.i4_keep_threads_active;
             s_fill_mem_rec_ip.e_output_format =
                             (IV_COLOR_FORMAT_T)s_app_ctx.e_output_chroma_format;
 
@@ -2196,6 +2209,7 @@ int main(WORD32 argc, CHAR *argv[])
 
             s_init_ip.u4_share_disp_buf = s_app_ctx.share_disp_buf;
             s_init_ip.u4_deinterlace = s_app_ctx.deinterlace;
+            s_init_ip.u4_keep_threads_active = s_app_ctx.i4_keep_threads_active;
             s_init_ip.s_ivd_init_ip_t.u4_num_mem_rec = u4_num_mem_recs;
             s_init_ip.s_ivd_init_ip_t.e_output_format =
                             (IV_COLOR_FORMAT_T)s_app_ctx.e_output_chroma_format;
