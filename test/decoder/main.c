@@ -1889,7 +1889,7 @@ int main(WORD32 argc, CHAR *argv[])
 
     s_app_ctx.get_color_fmt = &default_get_color_fmt;
 
-    s_app_ctx.i4_keep_threads_active = 0;
+    s_app_ctx.i4_keep_threads_active = 1;
 
     /* Set function pointers for display */
 #ifdef SDL_DISPLAY
