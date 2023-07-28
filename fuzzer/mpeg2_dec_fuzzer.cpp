@@ -95,7 +95,7 @@ Codec::Codec(IV_COLOR_FORMAT_T colorFormat, size_t numCores) {
   mWidth = 0;
   mHeight = 0;
   mDeinterlace = 1;
-  mKeepThreadsActive = 0;
+  mKeepThreadsActive = 1;
   memset(&mOutBufHandle, 0, sizeof(mOutBufHandle));
 }
 
