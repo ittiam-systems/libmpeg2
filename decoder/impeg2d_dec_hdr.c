@@ -1477,9 +1477,10 @@ void impeg2d_dec_pic_data(dec_state_t *ps_dec)
     ps_dec_state_multi_core = ps_dec->ps_dec_state_multi_core;
     impeg2d_get_slice_pos(ps_dec_state_multi_core);
 
-#ifdef KEEP_THREADS_ACTIVE
-    ps_dec->currThreadId = 0;
-#endif
+    if(ps_dec->i4_threads_active)
+    {
+        ps_dec->currThreadId = 0;
+    }
 
     i4_min_mb_y = 1;
     for(i=1; i < ps_dec->i4_num_cores; i++)
@@ -1497,29 +1498,32 @@ void impeg2d_dec_pic_data(dec_state_t *ps_dec)
 
         if(i4_status == 0 && !ps_dec_state_multi_core->au4_thread_launched[i])
         {
-#ifdef KEEP_THREADS_ACTIVE
-            ps_dec_thd->currThreadId = i;
-#endif
+            if(ps_dec->i4_threads_active)
+            {
+                ps_dec_thd->currThreadId = i;
+            }
             ithread_create(ps_dec_thd->pv_codec_thread_handle, NULL, (void *)impeg2d_dec_pic_data_thread, ps_dec_thd);
             ps_dec_state_multi_core->au4_thread_launched[i] = 1;
             i4_min_mb_y = ps_dec_thd->u2_mb_y + 1;
         }
-#ifndef KEEP_THREADS_ACTIVE
-        else
+
+        else if (!ps_dec->i4_threads_active)
         {
             ps_dec_state_multi_core->au4_thread_launched[i] = 0;
             break;
         }
-#else
-        i4_status = ithread_mutex_lock(ps_dec_thd->pv_proc_start_mutex);
-        if((IMPEG2D_ERROR_CODES_T)IV_SUCCESS != i4_status) return;
 
-        ps_dec_thd->ai4_process_start = 1;
-        ithread_cond_signal(ps_dec_thd->pv_proc_start_condition);
+        if(ps_dec->i4_threads_active)
+        {
+            i4_status = ithread_mutex_lock(ps_dec_thd->pv_proc_start_mutex);
+            if((IMPEG2D_ERROR_CODES_T)IV_SUCCESS != i4_status) return;
 
-        i4_status = ithread_mutex_unlock(ps_dec_thd->pv_proc_start_mutex);
-        if((IMPEG2D_ERROR_CODES_T)IV_SUCCESS != i4_status) return;
-#endif
+            ps_dec_thd->ai4_process_start = 1;
+            ithread_cond_signal(ps_dec_thd->pv_proc_start_condition);
+
+            i4_status = ithread_mutex_unlock(ps_dec_thd->pv_proc_start_mutex);
+            if((IMPEG2D_ERROR_CODES_T)IV_SUCCESS != i4_status) return;
+        }
     }
 
     impeg2d_dec_pic_data_thread(ps_dec);
@@ -1530,22 +1534,25 @@ void impeg2d_dec_pic_data(dec_state_t *ps_dec)
         if(ps_dec_state_multi_core->au4_thread_launched[i])
         {
             ps_dec_thd = ps_dec_state_multi_core->ps_dec_state[i];
-#ifdef KEEP_THREADS_ACTIVE
-            i4_status = ithread_mutex_lock(ps_dec_thd->pv_proc_done_mutex);
-            if((IMPEG2D_ERROR_CODES_T)IV_SUCCESS != i4_status) return;
-
-            while(!ps_dec_thd->ai4_process_done)
+            if (ps_dec->i4_threads_active)
             {
-                ithread_cond_wait(ps_dec_thd->pv_proc_done_condition,
-                                  ps_dec_thd->pv_proc_done_mutex);
+                i4_status = ithread_mutex_lock(ps_dec_thd->pv_proc_done_mutex);
+                if((IMPEG2D_ERROR_CODES_T)IV_SUCCESS != i4_status) return;
+
+                while(!ps_dec_thd->ai4_process_done)
+                {
+                    ithread_cond_wait(ps_dec_thd->pv_proc_done_condition,
+                                      ps_dec_thd->pv_proc_done_mutex);
+                }
+                ps_dec_thd->ai4_process_done = 0;
+                i4_status = ithread_mutex_unlock(ps_dec_thd->pv_proc_done_mutex);
+                if((IMPEG2D_ERROR_CODES_T)IV_SUCCESS != i4_status) return;
             }
-            ps_dec_thd->ai4_process_done = 0;
-            i4_status = ithread_mutex_unlock(ps_dec_thd->pv_proc_done_mutex);
-            if((IMPEG2D_ERROR_CODES_T)IV_SUCCESS != i4_status) return;
-#else
-            ithread_join(ps_dec_thd->pv_codec_thread_handle, NULL);
-            ps_dec_state_multi_core->au4_thread_launched[i] = 0;
-#endif
+            else
+            {
+                ithread_join(ps_dec_thd->pv_codec_thread_handle, NULL);
+                ps_dec_state_multi_core->au4_thread_launched[i] = 0;
+            }
         }
     }
 

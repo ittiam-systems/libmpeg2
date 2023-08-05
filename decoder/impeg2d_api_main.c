@@ -1008,6 +1008,7 @@ WORD32 impeg2d_join_threads(dec_state_multi_core_t *ps_dec_state_multi_core)
 
                 ithread_join(ps_dec_thd->pv_codec_thread_handle, NULL);
                 ps_dec_state_multi_core->au4_thread_launched[i] = 0;
+                ps_dec_state_multi_core->i4_break_threads = 0;
             }
         }
     }
