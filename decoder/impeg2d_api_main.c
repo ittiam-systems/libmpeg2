@@ -1677,6 +1677,7 @@ IV_API_CALL_STATUS_T impeg2d_api_init(iv_obj_t *ps_dechdl,
     WORD32 i4_num_threads;
     UWORD32 u4_share_disp_buf, u4_chroma_format;
     UWORD32 u4_deinterlace;
+    WORD32 i4_threads_active;
 
     ps_dec_init_ip = (impeg2d_init_ip_t *)ps_ip;
     ps_dec_init_op = (impeg2d_init_op_t *)ps_op;
@@ -1706,6 +1707,15 @@ IV_API_CALL_STATUS_T impeg2d_api_init(iv_obj_t *ps_dechdl,
     else
     {
         u4_deinterlace = 0;
+    }
+
+    if(ps_dec_init_ip->s_ivd_init_ip_t.u4_size > offsetof(impeg2d_init_ip_t, u4_keep_threads_active))
+    {
+        i4_threads_active = ps_dec_init_ip->u4_keep_threads_active;
+    }
+    else
+    {
+        i4_threads_active = 0;
     }
 
     if( (u4_chroma_format != IV_YUV_420P) &&
@@ -1956,6 +1966,7 @@ IV_API_CALL_STATUS_T impeg2d_api_init(iv_obj_t *ps_dechdl,
             ps_dec_state->u2_vertical_size = u4_max_frm_height;
             ps_dec_state->u4_share_disp_buf = u4_share_disp_buf;
             ps_dec_state->u4_deinterlace = u4_deinterlace;
+            ps_dec_state->i4_threads_active = i4_threads_active;
             ps_dec_state->ps_deint_pic = NULL;
         }
     }
