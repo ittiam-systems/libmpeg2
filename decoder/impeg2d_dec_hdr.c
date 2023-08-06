@@ -1041,12 +1041,8 @@ void impeg2d_dec_pic_data_thread(dec_state_t *ps_dec)
 
             if ((IMPEG2D_ERROR_CODES_T)IVD_ERROR_NONE != e_error)
             {
-                impeg2d_next_start_code(ps_dec);
-                if(ps_dec->s_bit_stream.u4_offset >= ps_dec->s_bit_stream.u4_max_offset)
-                {
-                    ps_dec->u4_error_code = IMPEG2D_BITSTREAM_BUFF_EXCEEDED_ERR;
-                    return;
-                }
+                ps_dec->u2_num_mbs_left = 0;
+                break;
             }
 
             /* Detecting next slice start code */
