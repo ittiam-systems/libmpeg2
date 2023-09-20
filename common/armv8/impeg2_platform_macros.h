@@ -20,11 +20,7 @@
 #ifndef __IMPEG2_PLATFORM_MACROS_H__
 #define __IMPEG2_PLATFORM_MACROS_H__
 
-#define CONV_LE_TO_BE(u4_temp2,u4_temp1) u4_temp2 =                            \
-                                         (u4_temp1 << 24) |                    \
-                                         ((u4_temp1 & 0xff00) << 8) |          \
-                                         ((u4_temp1 & 0xff0000) >> 8) |        \
-                                         (u4_temp1 >> 24);
+#define CONV_LE_TO_BE(u4_temp2,u4_temp1) u4_temp2 =  __builtin_bswap32(u4_temp1);
 
 static __inline  UWORD32 CLZ(UWORD32 u4_word)
 {
