@@ -18,8 +18,11 @@ license {
 cc_library_static {
     name: "libmpeg2dec",
     vendor_available: true,
-    host_supported:true,
-    shared_libs: ["liblog", "libcutils"],
+    host_supported: true,
+    shared_libs: [
+        "liblog",
+        "libcutils",
+    ],
 
     cflags: [
         "-D_LIB",
@@ -34,11 +37,18 @@ cc_library_static {
     ],
 
     export_include_dirs: [
-        "decoder",
         "common",
+        "decoder",
     ],
 
     srcs: [
+        "common/icv_sad.c",
+        "common/icv_variance.c",
+        "common/ideint.c",
+        "common/ideint_cac.c",
+        "common/ideint_debug.c",
+        "common/ideint_function_selector_generic.c",
+        "common/ideint_utils.c",
         "common/impeg2_buf_mgr.c",
         "common/impeg2_disp_mgr.c",
         "common/impeg2_format_conv.c",
@@ -50,10 +60,11 @@ cc_library_static {
         "common/ithread.c",
         "decoder/impeg2d_api_main.c",
         "decoder/impeg2d_bitstream.c",
+        "decoder/impeg2d_d_pic.c",
         "decoder/impeg2d_debug.c",
         "decoder/impeg2d_dec_hdr.c",
         "decoder/impeg2d_decoder.c",
-        "decoder/impeg2d_d_pic.c",
+        "decoder/impeg2d_deinterlace.c",
         "decoder/impeg2d_function_selector_generic.c",
         "decoder/impeg2d_globals.c",
         "decoder/impeg2d_i_pic.c",
@@ -63,40 +74,32 @@ cc_library_static {
         "decoder/impeg2d_pnb_pic.c",
         "decoder/impeg2d_vld.c",
         "decoder/impeg2d_vld_tables.c",
-        "decoder/impeg2d_deinterlace.c",
-        "common/icv_sad.c",
-        "common/icv_variance.c",
-        "common/ideint.c",
-        "common/ideint_cac.c",
-        "common/ideint_debug.c",
-        "common/ideint_function_selector_generic.c",
-        "common/ideint_utils.c",
     ],
 
     arch: {
         arm: {
             local_include_dirs: [
-                "decoder/arm",
                 "common/arm",
+                "decoder/arm",
             ],
 
             srcs: [
-                "decoder/arm/impeg2d_function_selector.c",
                 "common/arm/ideint_function_selector.c",
+                "decoder/arm/impeg2d_function_selector.c",
             ],
 
             neon: {
                 srcs: [
-                    "decoder/arm/impeg2d_function_selector_a9q.c",
-                    "common/arm/ideint_function_selector_a9.c",
                     "common/arm/icv_sad_a9.s",
                     "common/arm/icv_variance_a9.s",
-                    "common/arm/ideint_spatial_filter_a9.s",
                     "common/arm/ideint_cac_a9.s",
+                    "common/arm/ideint_function_selector_a9.c",
+                    "common/arm/ideint_spatial_filter_a9.s",
                     "common/arm/impeg2_format_conv.s",
                     "common/arm/impeg2_idct.s",
                     "common/arm/impeg2_inter_pred.s",
                     "common/arm/impeg2_mem_func.s",
+                    "decoder/arm/impeg2d_function_selector_a9q.c",
                 ],
                 cflags: [
                     "-UDISABLE_NEON",
@@ -127,24 +130,24 @@ cc_library_static {
                 "-DDEFAULT_ARCH=D_ARCH_ARMV8_GENERIC",
             ],
             local_include_dirs: [
-                "decoder/arm",
                 "common/armv8",
+                "decoder/arm",
             ],
 
             srcs: [
-                "decoder/arm/impeg2d_function_selector.c",
-                "decoder/arm/impeg2d_function_selector_av8.c",
                 "common/arm/ideint_function_selector.c",
                 "common/arm/ideint_function_selector_av8.c",
                 "common/armv8/icv_sad_av8.s",
                 "common/armv8/icv_variance_av8.s",
-                "common/armv8/ideint_spatial_filter_av8.s",
                 "common/armv8/ideint_cac_av8.s",
-                "common/armv8/impeg2_neon_macros.s",
+                "common/armv8/ideint_spatial_filter_av8.s",
                 "common/armv8/impeg2_format_conv.s",
                 "common/armv8/impeg2_idct.s",
                 "common/armv8/impeg2_inter_pred.s",
                 "common/armv8/impeg2_mem_func.s",
+                "common/armv8/impeg2_neon_macros.s",
+                "decoder/arm/impeg2d_function_selector.c",
+                "decoder/arm/impeg2d_function_selector_av8.c",
             ],
         },
 
@@ -154,8 +157,8 @@ cc_library_static {
             ],
 
             srcs: [
-                "decoder/riscv/impeg2d_function_selector.c",
                 "common/riscv/ideint_function_selector.c",
+                "decoder/riscv/impeg2d_function_selector.c",
             ],
         },
 
@@ -169,25 +172,25 @@ cc_library_static {
             ],
 
             local_include_dirs: [
-                "decoder/x86",
                 "common/x86",
+                "decoder/x86",
             ],
 
             srcs: [
-                "decoder/x86/impeg2d_function_selector.c",
-                "decoder/x86/impeg2d_function_selector_avx2.c",
-                "decoder/x86/impeg2d_function_selector_ssse3.c",
-                "decoder/x86/impeg2d_function_selector_sse42.c",
-                "common/x86/ideint_function_selector.c",
-                "common/x86/ideint_function_selector_ssse3.c",
-                "common/x86/ideint_function_selector_sse42.c",
-                "common/x86/icv_variance_ssse3.c",
                 "common/x86/icv_sad_ssse3.c",
+                "common/x86/icv_variance_ssse3.c",
                 "common/x86/ideint_cac_ssse3.c",
+                "common/x86/ideint_function_selector.c",
+                "common/x86/ideint_function_selector_sse42.c",
+                "common/x86/ideint_function_selector_ssse3.c",
                 "common/x86/ideint_spatial_filter_ssse3.c",
                 "common/x86/impeg2_idct_recon_sse42_intr.c",
                 "common/x86/impeg2_inter_pred_sse42_intr.c",
                 "common/x86/impeg2_mem_func_sse42_intr.c",
+                "decoder/x86/impeg2d_function_selector.c",
+                "decoder/x86/impeg2d_function_selector_avx2.c",
+                "decoder/x86/impeg2d_function_selector_sse42.c",
+                "decoder/x86/impeg2d_function_selector_ssse3.c",
             ],
         },
 
@@ -201,25 +204,25 @@ cc_library_static {
             ],
 
             local_include_dirs: [
-                "decoder/x86",
                 "common/x86",
+                "decoder/x86",
             ],
 
             srcs: [
-                "decoder/x86/impeg2d_function_selector.c",
-                "decoder/x86/impeg2d_function_selector_avx2.c",
-                "decoder/x86/impeg2d_function_selector_ssse3.c",
-                "decoder/x86/impeg2d_function_selector_sse42.c",
-                "common/x86/ideint_function_selector.c",
-                "common/x86/ideint_function_selector_ssse3.c",
-                "common/x86/ideint_function_selector_sse42.c",
-                "common/x86/icv_variance_ssse3.c",
                 "common/x86/icv_sad_ssse3.c",
+                "common/x86/icv_variance_ssse3.c",
                 "common/x86/ideint_cac_ssse3.c",
+                "common/x86/ideint_function_selector.c",
+                "common/x86/ideint_function_selector_sse42.c",
+                "common/x86/ideint_function_selector_ssse3.c",
                 "common/x86/ideint_spatial_filter_ssse3.c",
                 "common/x86/impeg2_idct_recon_sse42_intr.c",
                 "common/x86/impeg2_inter_pred_sse42_intr.c",
                 "common/x86/impeg2_mem_func_sse42_intr.c",
+                "decoder/x86/impeg2d_function_selector.c",
+                "decoder/x86/impeg2d_function_selector_avx2.c",
+                "decoder/x86/impeg2d_function_selector_sse42.c",
+                "decoder/x86/impeg2d_function_selector_ssse3.c",
             ],
         },
     },
