@@ -60,6 +60,4 @@ static __inline UWORD32 CLZ(UWORD32 u4_word)
 
 #define NOP(nop_cnt)    {UWORD32 nop_i; for (nop_i = 0; nop_i < nop_cnt; nop_i++) asm("nop");}
 
-#define INLINE inline
-
 #endif /* _ICV_PLATFORM_MACROS_H_ */

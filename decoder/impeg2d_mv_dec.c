@@ -60,7 +60,7 @@
 *
 * Value Returned: None
 *******************************************************************************/
-INLINE void impeg2d_dec_1mv(stream_t *ps_stream, WORD16 ai2_pred_mv[], WORD16 ai2_mv[],UWORD16 au2_fCode[],
+void impeg2d_dec_1mv(stream_t *ps_stream, WORD16 ai2_pred_mv[], WORD16 ai2_mv[],UWORD16 au2_fCode[],
            UWORD16 u2_mv_y_shift, WORD16 ai2_dmv[])
 {
     WORD16  i2_f;

@@ -44,6 +44,4 @@ static __inline UWORD32 CLZ(UWORD32 u4_word)
 #define CLIP_S16(x) ((x) > 32767) ? (32767) : (((x) < -32768) ? (-32768) : (x))
 #define PLD(x)
 
-#define INLINE
-
 #endif /* __IMPEG2_PLATFORM_MACROS_H__ */

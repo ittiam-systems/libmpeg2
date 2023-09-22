@@ -105,8 +105,6 @@ static __inline UWORD32 ITT_BIG_ENDIAN(UWORD32 x)
 #define SHR_NEG(val,shift)  (((shift) > 0) ? ( (val) >> (shift)) : ((val) << (-(shift))))
 #define SHL_NEG(val,shift)  (((shift) > 0) ? ( (val) >> (-(shift))) : ((val) << (shift)))
 
-#define INLINE inline
-
 #define MEM_ALIGN8 __attribute__ ((aligned (8)))
 #define MEM_ALIGN16 __attribute__ ((aligned (16)))
 #define MEM_ALIGN32 __attribute__ ((aligned (32)))
