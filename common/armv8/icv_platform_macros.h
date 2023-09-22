@@ -38,9 +38,7 @@
 #ifndef __ICV_PLATFORM_MACROS_H__
 #define __ICV_PLATFORM_MACROS_H__
 
-#define INLINE inline
-
-static INLINE UWORD32 CLZ(UWORD32 u4_word)
+static __inline UWORD32 CLZ(UWORD32 u4_word)
 {
     if(u4_word)
         return (__builtin_clz(u4_word));
@@ -82,8 +80,6 @@ static __inline  UWORD32 CLZNZ(UWORD32 u4_word)
 
 #define SHR_NEG(val,shift)  (((shift) > 0) ? ( (val) >> (shift)) : ((val) << (-(shift))))
 #define SHL_NEG(val,shift)  (((shift) > 0) ? ( (val) >> (-(shift))) : ((val) << (shift)))
-
-#define INLINE inline
 
 #define MEM_ALIGN8 __attribute__ ((aligned (8)))
 #define MEM_ALIGN16 __attribute__ ((aligned (16)))

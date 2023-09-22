@@ -22,7 +22,7 @@
 
 e_field_t impeg2d_dec_mv(stream_t *stream, WORD16 predMv[], WORD16 mv[],UWORD16 fCode[],
            UWORD16 shift,UWORD16 fld_sel);
-INLINE void impeg2d_dec_1mv(stream_t *stream, WORD16 predMv[], WORD16 mv[],UWORD16 fCode[],
+void impeg2d_dec_1mv(stream_t *stream, WORD16 predMv[], WORD16 mv[],UWORD16 fCode[],
            UWORD16 shift,WORD16 dmv[]);
 
 #endif /* #ifndef __IMPEG2D_MV_DEC_H__  */

@@ -144,7 +144,7 @@ void impeg2d_bit_stream_init(stream_t *ps_stream,
 *
 *  Values Returned  : The bit read(0/1)
 *******************************************************************************/
-INLINE UWORD8 impeg2d_bit_stream_get_bit(stream_t *ps_stream)
+UWORD8 impeg2d_bit_stream_get_bit(stream_t *ps_stream)
 {
     UWORD32     u4_bit,u4_offset,u4_temp;
     UWORD32     u4_curr_bit;
@@ -188,7 +188,7 @@ INLINE UWORD8 impeg2d_bit_stream_get_bit(stream_t *ps_stream)
 *
 *  Values Returned  : None
 *******************************************************************************/
-INLINE void impeg2d_bit_stream_flush(void* pv_ctxt, UWORD32 u4_no_of_bits)
+void impeg2d_bit_stream_flush(void* pv_ctxt, UWORD32 u4_no_of_bits)
 {
     stream_t *ps_stream = (stream_t *)pv_ctxt;
 
@@ -219,7 +219,7 @@ INLINE void impeg2d_bit_stream_flush(void* pv_ctxt, UWORD32 u4_no_of_bits)
 *                     least significant bit and going towards most significant
 *                     bit in the order of their occurence.
 *******************************************************************************/
-INLINE void impeg2d_bit_stream_flush_to_byte_boundary(void* pv_ctxt)
+void impeg2d_bit_stream_flush_to_byte_boundary(void* pv_ctxt)
 {
     UWORD8 u1_bit_offset;
     stream_t *ps_stream = (stream_t *)pv_ctxt;
@@ -257,7 +257,7 @@ INLINE void impeg2d_bit_stream_flush_to_byte_boundary(void* pv_ctxt)
 *                     least significant bit and going towards most significant
 *                     bit in the order of their occurence.
 *******************************************************************************/
-INLINE UWORD32 impeg2d_bit_stream_nxt( stream_t  *ps_stream, WORD32 i4_no_of_bits)
+UWORD32 impeg2d_bit_stream_nxt( stream_t  *ps_stream, WORD32 i4_no_of_bits)
 {
     UWORD32     u4_bits,u4_offset,u4_temp;
     UWORD8      u4_bit_ptr;
@@ -306,7 +306,7 @@ INLINE UWORD32 impeg2d_bit_stream_nxt( stream_t  *ps_stream, WORD32 i4_no_of_bit
 *                     bit in the order of their occurence.
 *******************************************************************************/
 
-INLINE UWORD32 impeg2d_bit_stream_get(void* pv_ctxt, UWORD32 u4_num_bits)
+UWORD32 impeg2d_bit_stream_get(void* pv_ctxt, UWORD32 u4_num_bits)
 {
     UWORD32 u4_next_bits = impeg2d_bit_stream_nxt(pv_ctxt, u4_num_bits);
     impeg2d_bit_stream_flush(pv_ctxt, u4_num_bits);
@@ -331,7 +331,7 @@ INLINE UWORD32 impeg2d_bit_stream_get(void* pv_ctxt, UWORD32 u4_num_bits)
 *                     least significant bit and going towards most significant
 *                     bit in the order of their occurence.
 *******************************************************************************/
-INLINE UWORD32 impeg2d_bit_stream_num_bits_read(void* pv_ctxt)
+UWORD32 impeg2d_bit_stream_num_bits_read(void* pv_ctxt)
 {
     stream_t *u4_no_of_bitsstream = (stream_t *)pv_ctxt;
     size_t     u4_temp;

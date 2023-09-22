@@ -65,7 +65,6 @@ static __inline WORD32 CLIP_S16(WORD32 x)
     return x;
 }
 
-#define INLINE
 #define PLD(x) __pld(x)
 
 #endif /* __IMPEG2_PLATFORM_MACROS_H__ */

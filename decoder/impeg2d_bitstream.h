@@ -139,13 +139,13 @@ typedef struct _stream_t
 void impeg2d_bit_stream_init(stream_t *stream,
                              UWORD8 *byteBuf,
                              UWORD32 u4_max_offset);
-INLINE UWORD8 impeg2d_bit_stream_get_bit(stream_t *stream);
-INLINE void impeg2d_bit_stream_flush(void* ctxt, UWORD32 NoOfBits);
-INLINE void impeg2d_bit_stream_flush_to_byte_boundary(void* ctxt);
-INLINE UWORD32 impeg2d_bit_stream_nxt(stream_t *stream, WORD32 NoOfBits);
+UWORD8 impeg2d_bit_stream_get_bit(stream_t *stream);
+void impeg2d_bit_stream_flush(void* ctxt, UWORD32 NoOfBits);
+void impeg2d_bit_stream_flush_to_byte_boundary(void* ctxt);
+UWORD32 impeg2d_bit_stream_nxt(stream_t *stream, WORD32 NoOfBits);
 
-INLINE UWORD32 impeg2d_bit_stream_get(void* ctxt, UWORD32 numBits);
-INLINE UWORD32 impeg2d_bit_stream_num_bits_read(void* ctxt);
+UWORD32 impeg2d_bit_stream_get(void* ctxt, UWORD32 numBits);
+UWORD32 impeg2d_bit_stream_num_bits_read(void* ctxt);
 
 
 
