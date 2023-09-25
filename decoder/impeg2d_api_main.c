@@ -782,6 +782,45 @@ IV_API_CALL_STATUS_T impeg2d_api_get_version(iv_obj_t *ps_dechdl,
     return (IV_SUCCESS);
 }
 
+WORD32 impeg2d_join_threads(dec_state_multi_core_t *ps_dec_state_multi_core)
+{
+    dec_state_t *ps_dec_thd, *ps_dec_state;
+
+    ps_dec_state = ps_dec_state_multi_core->ps_dec_state[0];
+
+    if(ps_dec_state->i4_threads_active)
+    {
+        int i;
+        for(i = 0; i < MAX_THREADS; i++)
+        {
+            WORD32 ret;
+            ps_dec_thd = ps_dec_state_multi_core->ps_dec_state[i];
+            if(ps_dec_state_multi_core->au4_thread_launched[i])
+            {
+                ret = ithread_mutex_lock(ps_dec_thd->pv_proc_start_mutex);
+                if((IMPEG2D_ERROR_CODES_T)IV_SUCCESS != ret) return(IV_FAIL);
+
+                // set process start for the threads waiting on the start condition
+                // in the decode routine so as to break them
+                ps_dec_thd->ai4_process_start = 1;
+                ps_dec_state_multi_core->i4_break_threads = 1;
+
+                ret = ithread_cond_signal(ps_dec_thd->pv_proc_start_condition);
+                if((IMPEG2D_ERROR_CODES_T)IV_SUCCESS != ret) return(IV_FAIL);
+
+                ret = ithread_mutex_unlock(ps_dec_thd->pv_proc_start_mutex);
+                if((IMPEG2D_ERROR_CODES_T)IV_SUCCESS != ret) return(IV_FAIL);
+
+                ithread_join(ps_dec_thd->pv_codec_thread_handle, NULL);
+                ps_dec_state_multi_core->au4_thread_launched[i] = 0;
+                ps_dec_state_multi_core->i4_break_threads = 0;
+            }
+        }
+    }
+
+    return IV_SUCCESS;
+}
+
 /*****************************************************************************/
 /*                                                                           */
 /*  Function Name : impeg2d_api_get_buf_info                                 */
@@ -915,6 +954,7 @@ IV_API_CALL_STATUS_T impeg2d_api_set_flush_mode(iv_obj_t *ps_dechdl,
     ps_dec_state_multi_core =
                     (dec_state_multi_core_t *)(ps_dechdl->pv_codec_handle);
     ps_dec_state = ps_dec_state_multi_core->ps_dec_state[0];
+    impeg2d_join_threads(ps_dec_state_multi_core);
 
     ps_dec_state->u1_flushfrm = 1;
 
@@ -977,44 +1017,6 @@ IV_API_CALL_STATUS_T impeg2d_api_set_default(iv_obj_t *ps_dechdl,
 
 }
 
-WORD32 impeg2d_join_threads(dec_state_multi_core_t *ps_dec_state_multi_core)
-{
-    dec_state_t *ps_dec_thd, *ps_dec_state;
-
-    ps_dec_state = ps_dec_state_multi_core->ps_dec_state[0];
-
-    if(ps_dec_state->i4_threads_active)
-    {
-        int i;
-        for(i = 0; i < MAX_THREADS; i++)
-        {
-            WORD32 ret;
-            ps_dec_thd = ps_dec_state_multi_core->ps_dec_state[i];
-            if(ps_dec_state_multi_core->au4_thread_launched[i])
-            {
-                ret = ithread_mutex_lock(ps_dec_thd->pv_proc_start_mutex);
-                if((IMPEG2D_ERROR_CODES_T)IV_SUCCESS != ret) return(IV_FAIL);
-
-                // set process start for the threads waiting on the start condition
-                // in the decode routine so as to break them
-                ps_dec_thd->ai4_process_start = 1;
-                ps_dec_state_multi_core->i4_break_threads = 1;
-
-                ret = ithread_cond_signal(ps_dec_thd->pv_proc_start_condition);
-                if((IMPEG2D_ERROR_CODES_T)IV_SUCCESS != ret) return(IV_FAIL);
-
-                ret = ithread_mutex_unlock(ps_dec_thd->pv_proc_start_mutex);
-                if((IMPEG2D_ERROR_CODES_T)IV_SUCCESS != ret) return(IV_FAIL);
-
-                ithread_join(ps_dec_thd->pv_codec_thread_handle, NULL);
-                ps_dec_state_multi_core->au4_thread_launched[i] = 0;
-                ps_dec_state_multi_core->i4_break_threads = 0;
-            }
-        }
-    }
-
-    return IV_SUCCESS;
-}
 
 /*****************************************************************************/
 /*                                                                           */
