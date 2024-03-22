@@ -86,36 +86,21 @@ cc_library_static {
             srcs: [
                 "common/arm/ideint_function_selector.c",
                 "decoder/arm/impeg2d_function_selector.c",
+                "common/arm/icv_sad_a9.s",
+                "common/arm/icv_variance_a9.s",
+                "common/arm/ideint_cac_a9.s",
+                "common/arm/ideint_function_selector_a9.c",
+                "common/arm/ideint_spatial_filter_a9.s",
+                "common/arm/impeg2_format_conv.s",
+                "common/arm/impeg2_idct.s",
+                "common/arm/impeg2_inter_pred.s",
+                "common/arm/impeg2_mem_func.s",
+                "decoder/arm/impeg2d_function_selector_a9q.c",
             ],
 
-            neon: {
-                srcs: [
-                    "common/arm/icv_sad_a9.s",
-                    "common/arm/icv_variance_a9.s",
-                    "common/arm/ideint_cac_a9.s",
-                    "common/arm/ideint_function_selector_a9.c",
-                    "common/arm/ideint_spatial_filter_a9.s",
-                    "common/arm/impeg2_format_conv.s",
-                    "common/arm/impeg2_idct.s",
-                    "common/arm/impeg2_inter_pred.s",
-                    "common/arm/impeg2_mem_func.s",
-                    "decoder/arm/impeg2d_function_selector_a9q.c",
-                ],
-                cflags: [
-                    "-UDISABLE_NEON",
-                    "-UDEFAULT_ARCH",
-                    "-DDEFAULT_ARCH=D_ARCH_ARM_A9Q",
-                ],
-            },
-
             cflags: [
-                "-DDISABLE_NEONINTR",
                 "-DARM",
-                "-DARMGCC",
-
-                // These are overriden by armv7_a_neon
-                "-DDISABLE_NEON",
-                "-DDEFAULT_ARCH=D_ARCH_ARM_NONEON",
+                "-DDEFAULT_ARCH=D_ARCH_ARM_A9Q",
             ],
             instruction_set: "arm",
         },
@@ -123,10 +108,7 @@ cc_library_static {
         arm64: {
             cflags: [
                 "-DARMV8",
-                "-DDISABLE_NEONINTR",
                 "-DARM",
-                "-DARMGCC",
-
                 "-DDEFAULT_ARCH=D_ARCH_ARMV8_GENERIC",
             ],
             local_include_dirs: [
