@@ -88,8 +88,13 @@ void ideint_init_function_ptr(ctxt_t *ps_ctxt)
     {
 #if defined(ARMV8)
         default:
+#ifdef DARWIN
+            ideint_init_function_ptr_generic(ps_ctxt);
+            break;
+#else
             ideint_init_function_ptr_av8(ps_ctxt);
             break;
+#endif
 #elif !defined(DISABLE_NEON)
         case ICV_ARM_NONEON:
             break;

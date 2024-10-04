@@ -170,10 +170,10 @@ yuv420sp_uv_chroma:
     ldr             r3, [sp, #24]       @// Load pu1_dest_uv from stack
 
     ldr             r4, [sp, #28]       @// Load u2_height from stack
-    add             r4, r4, 1
+    add             r4, r4, #1
 
     ldr             r5, [sp, #32]       @// Load u2_width from stack
-    add             r5, r5, 1
+    add             r5, r5, #1
     bic             r5, r5, #1
 
     ldr             r7, [sp, #40]       @// Load u2_strideu from stack
@@ -334,10 +334,10 @@ yuv420sp_vu_chroma:
     ldr             r3, [sp, #24]       @// Load pu1_dest_uv from stack
 
     ldr             r4, [sp, #28]       @// Load u2_height from stack
-    add             r4, r4, 1
+    add             r4, r4, #1
 
     ldr             r5, [sp, #32]       @// Load u2_width from stack
-    add             r5, r5, 1
+    add             r5, r5, #1
     bic             r5, r5, #1
 
     ldr             r7, [sp, #40]       @// Load u2_strideu from stack
