@@ -19,7 +19,7 @@
 */
 #include <string.h>
 #ifdef __ANDROID__
-#include <log/log.h>
+#include <android/log.h>
 #endif
 #include "iv_datatypedef.h"
 #include "iv.h"
@@ -44,6 +44,15 @@
 #include "impeg2d_pic_proc.h"
 #include "impeg2d_deinterlace.h"
 
+#ifdef __ANDROID__
+#ifndef ALOGE
+#define ALOGE(...) ((void)__android_log_print(ANDROID_LOG_ERROR, NULL, __VA_ARGS__))
+#endif
+inline int android_errorWriteLog(int tag, const char* subTag) {
+    ALOGE("android_errorWriteLog(%x, %s)", tag, subTag);
+    return 0;
+}
+#endif
 
 /*****************************************************************************
 * MPEG2 Constants for Parse Check

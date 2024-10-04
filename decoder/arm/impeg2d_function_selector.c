@@ -77,8 +77,13 @@ void impeg2d_init_function_ptr(void *pv_codec)
 #if defined(ARMV8)
         case ARCH_ARMV8_GENERIC:
         default:
+#ifdef DARWIN
+            impeg2d_init_function_ptr_generic(ps_codec);
+            break;
+#else
             impeg2d_init_function_ptr_av8(ps_codec);
             break;
+#endif
 #elif !defined(DISABLE_NEON)
         case ARCH_ARM_A5:
         case ARCH_ARM_A7:
