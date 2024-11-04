@@ -32,8 +32,6 @@ cc_library_static {
         "-O3",
         "-DANDROID",
         "-Werror",
-        // #KEEP_THREAD_ACTIVE is experimental
-        "-UKEEP_THREADS_ACTIVE",
     ],
 
     export_include_dirs: [
