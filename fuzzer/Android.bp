@@ -9,6 +9,10 @@ package {
 
 cc_fuzz {
     name: "mpeg2_dec_fuzzer",
+    //TODO: b/485868924
+    defaults: [
+        "no_bti",
+    ],
     host_supported: true,
     srcs: [
         "mpeg2_dec_fuzzer.cpp",
