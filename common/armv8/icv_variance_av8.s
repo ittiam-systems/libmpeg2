@@ -62,10 +62,12 @@
 //* @remarks
 //*
 //******************************************************************************
+.include "impeg2_neon_macros.s"
+.text
 
     .global icv_variance_8x4_av8
 
-icv_variance_8x4_av8:
+ENTRY icv_variance_8x4_av8
 
     // Load 8x4 source
     ld1     {v0.8b},    [x0],     x1
@@ -115,4 +117,5 @@ icv_variance_8x4_av8:
     // Divide by 32 * 32
 
     ASR     x0,     x0,     #10
+    EXIT_FUNC
     ret

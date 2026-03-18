@@ -108,9 +108,8 @@
 
 
 
-.text
-.align 4
 .include "impeg2_neon_macros.s"
+.text
 
 .set idct_stg1_shift       ,            12
 .set idct_stg2_shift       ,            16
@@ -124,7 +123,7 @@
 .extern gai2_impeg2_mismatch_stg2_additive
 
 .global impeg2_idct_recon_dc_av8
-impeg2_idct_recon_dc_av8:
+ENTRY impeg2_idct_recon_dc_av8
     // STMFD sp!,{x4,x6,x12,x14}
     push_v_regs
     ////x0: pi2_src
@@ -205,6 +204,7 @@ impeg2_idct_recon_dc_av8:
 
     // LDMFD sp!,{x4,x6,x12,pc}
     pop_v_regs
+    EXIT_FUNC
     ret
 
 
@@ -212,7 +212,7 @@ impeg2_idct_recon_dc_av8:
 .global impeg2_idct_recon_dc_mismatch_av8
 .extern gai2_impeg2_idct_last_row_q11
 .extern gai2_impeg2_mismatch_stg1_outp
-impeg2_idct_recon_dc_mismatch_av8:
+ENTRY impeg2_idct_recon_dc_mismatch_av8
     // STMFD sp!,{x4-x12,x14}
     push_v_regs
 
@@ -318,13 +318,14 @@ impeg2_idct_recon_dc_mismatch_av8:
 
     // LDMFD sp!,{x4-x12,pc}
     pop_v_regs
+    EXIT_FUNC
     ret
 
 .globl impeg2_idct_recon_av8
 
 .type impeg2_idct_recon_av8, %function
 
-impeg2_idct_recon_av8:
+ENTRY impeg2_idct_recon_av8
 ////register usage.extern        - loading and until idct of columns
 ////    cosine constants     -     d0
 ////    sine constants         -     d1
@@ -1240,6 +1241,7 @@ pred_buff_addition:
     // ldmfd sp!,{x4-x12,pc}
     ldp             x19, x20, [sp], #16
     pop_v_regs
+    EXIT_FUNC
     ret
 
 
