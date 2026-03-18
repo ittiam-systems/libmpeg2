@@ -43,8 +43,9 @@
 .set log2_16                    ,      4
 .set log2_2                     ,      1
 
-.text
 .include "impeg2_neon_macros.s"
+.text
+
 ///*
 //// ----------------------------------------------------------------------------
 //// Struct/Union Types and Define
@@ -113,7 +114,7 @@
 //*                                                                            *
 //*****************************************************************************/
 .global impeg2_fmt_conv_yuv420p_to_yuv420sp_uv_av8
-impeg2_fmt_conv_yuv420p_to_yuv420sp_uv_av8:
+ENTRY impeg2_fmt_conv_yuv420p_to_yuv420sp_uv_av8
 
     //// push the registers on the stack
     //    pu1_y,                - x0
@@ -239,6 +240,7 @@ yuv420sp_uv_row_loop__uv:
     // LDMFD sp!,{x4-x12,PC}
     ldp             x19, x20, [sp], #16
     pop_v_regs
+    EXIT_FUNC
     ret
 
 
@@ -290,7 +292,7 @@ yuv420sp_uv_row_loop__uv:
 //*****************************************************************************/
 
 .global impeg2_fmt_conv_yuv420p_to_yuv420sp_vu_av8
-impeg2_fmt_conv_yuv420p_to_yuv420sp_vu_av8:
+ENTRY impeg2_fmt_conv_yuv420p_to_yuv420sp_vu_av8
 
     //// push the registers on the stack
     //    pu1_y,                - x0
@@ -416,5 +418,6 @@ yuv420sp_vu_row_loop__uv:
     // LDMFD sp!,{x4-x12,PC}
     ldp             x19, x20, [sp], #16
     pop_v_regs
+    EXIT_FUNC
     ret
 

@@ -41,8 +41,8 @@
 //// ----------------------------------------------------------------------------
 //*/
 //              PRESERVE8
-.text
 .include "impeg2_neon_macros.s"
+.text
 ///*
 //// ----------------------------------------------------------------------------
 //// Struct/Union Types and Define
@@ -96,7 +96,7 @@
 ////-----------------------------------------------------------------------------
 //*/
 .global impeg2_memset_8bit_8x8_block_av8
-impeg2_memset_8bit_8x8_block_av8:
+ENTRY impeg2_memset_8bit_8x8_block_av8
     push_v_regs
 
 //        ADD            x3,x0,#WIDTH_X_SIZE            @//x3 is another copy address offsetted
@@ -113,6 +113,7 @@ impeg2_memset_8bit_8x8_block_av8:
     st1             {v0.8b}, [x0], x2   ////Store the row 8
 
     pop_v_regs
+    EXIT_FUNC
     ret
 
 
@@ -147,7 +148,7 @@ impeg2_memset_8bit_8x8_block_av8:
 .global impeg2_memset0_16bit_8x8_linear_block_av8
 
 
-impeg2_memset0_16bit_8x8_linear_block_av8:
+ENTRY impeg2_memset0_16bit_8x8_linear_block_av8
 
     push_v_regs
 
@@ -174,6 +175,7 @@ impeg2_memset0_16bit_8x8_linear_block_av8:
 
 
     pop_v_regs
+    EXIT_FUNC
     ret
 
 

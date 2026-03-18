@@ -17,7 +17,6 @@ license {
 
 cc_library_static {
     name: "libmpeg2dec",
-    defaults: ["no_bti"],
     vendor_available: true,
     host_supported: true,
     shared_libs: [

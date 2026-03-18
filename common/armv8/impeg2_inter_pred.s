@@ -41,8 +41,8 @@
 //// ----------------------------------------------------------------------------
 //*/
 //              PRESERVE8
-.text
 .include "impeg2_neon_macros.s"
+.text
 
 ///*
 //// ----------------------------------------------------------------------------
@@ -100,7 +100,7 @@
 .global impeg2_copy_mb_av8
 
 
-impeg2_copy_mb_av8:
+ENTRY impeg2_copy_mb_av8
 
 //STMFD   x13!,{x4,x5,x12,x14}
     push_v_regs
@@ -196,6 +196,7 @@ impeg2_copy_mb_av8:
 
 //LDMFD   x13!,{x4,x5,x12,PC}
     pop_v_regs
+    EXIT_FUNC
     ret
 
 
@@ -227,7 +228,7 @@ impeg2_copy_mb_av8:
 
 .global impeg2_mc_fullx_halfy_8x8_av8
 
-impeg2_mc_fullx_halfy_8x8_av8:
+ENTRY impeg2_mc_fullx_halfy_8x8_av8
 
 //STMFD       x13!,{x12,x14}
     push_v_regs
@@ -269,6 +270,7 @@ impeg2_mc_fullx_halfy_8x8_av8:
 
 // LDMFD sp!,{x12,pc}
     pop_v_regs
+    EXIT_FUNC
     ret
 
 
@@ -308,7 +310,7 @@ impeg2_mc_fullx_halfy_8x8_av8:
 
 
 
-impeg2_mc_halfx_fully_8x8_av8:
+ENTRY impeg2_mc_halfx_fully_8x8_av8
 
     // STMFD sp!,{x12,x14}
     push_v_regs
@@ -390,6 +392,7 @@ impeg2_mc_halfx_fully_8x8_av8:
 
     // LDMFD sp!,{x12,pc}
     pop_v_regs
+    EXIT_FUNC
     ret
 
 
@@ -428,7 +431,7 @@ impeg2_mc_halfx_fully_8x8_av8:
 
 .global impeg2_mc_halfx_halfy_8x8_av8
 
-impeg2_mc_halfx_halfy_8x8_av8:
+ENTRY impeg2_mc_halfx_halfy_8x8_av8
 
     // STMFD sp!,{x12,x14}
     push_v_regs
@@ -567,6 +570,7 @@ impeg2_mc_halfx_halfy_8x8_av8:
 
     // LDMFD sp!,{x12,pc}
     pop_v_regs
+    EXIT_FUNC
     ret
 
 
@@ -601,7 +605,7 @@ impeg2_mc_halfx_halfy_8x8_av8:
 
 
 .global impeg2_mc_fullx_fully_8x8_av8
-impeg2_mc_fullx_fully_8x8_av8:
+ENTRY impeg2_mc_fullx_fully_8x8_av8
 
 
     // STMFD sp!,{x12,x14}
@@ -650,6 +654,7 @@ impeg2_mc_fullx_fully_8x8_av8:
 
     // LDMFD sp!,{x12,pc}
     pop_v_regs
+    EXIT_FUNC
     ret
 
 
@@ -681,7 +686,7 @@ impeg2_mc_fullx_fully_8x8_av8:
 .global impeg2_interpolate_av8
 
 
-impeg2_interpolate_av8:
+ENTRY impeg2_interpolate_av8
 
 //STMFD    x13!,{x4-x7,x12,x14}
     push_v_regs
@@ -807,6 +812,7 @@ interp_chromablocks_stride:
 
     //LDMFD  x13!,{x4-x7,x12,PC}
     pop_v_regs
+    EXIT_FUNC
     ret
 
 

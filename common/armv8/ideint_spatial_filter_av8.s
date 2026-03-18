@@ -60,10 +60,12 @@
 //* @remarks
 //*
 //******************************************************************************
+.include "impeg2_neon_macros.s"
+.text
 
     .global ideint_spatial_filter_av8
 
-ideint_spatial_filter_av8:
+ENTRY ideint_spatial_filter_av8
 
     movi  v16.8h, #0
     movi  v18.8h, #0
@@ -222,4 +224,5 @@ filter_loop:
     subs    x8,         x8,         #1
     bgt     filter_loop
 
+    EXIT_FUNC
     ret
