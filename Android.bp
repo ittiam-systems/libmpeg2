@@ -220,5 +220,3 @@ cc_library_static {
     ],
     min_sdk_version: "29",
 }
-
-subdirs = ["test"]
