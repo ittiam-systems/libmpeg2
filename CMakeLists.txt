@@ -149,7 +149,7 @@ add_library(libmpeg2dec ${LIBMPEG2DEC_SRCS})
 set_target_properties(libmpeg2dec
                       PROPERTIES COMPILE_FLAGS "${LIBMPEG2DEC_C_FLAGS}")
 
-libmpeg2_add_executable(mpeg2dec libmpeg2dec SOURCES ${MPEG2_ROOT}/test/decoder/main.c)
+libmpeg2_add_executable(mpeg2dec libmpeg2dec SOURCES ${MPEG2_ROOT}/examples/decoder/main.c)
 target_compile_definitions(mpeg2dec PRIVATE PROFILE_ENABLE MD5_DISABLE)
 
 if(NOT "${SYSTEM_NAME}" STREQUAL "Darwin")
