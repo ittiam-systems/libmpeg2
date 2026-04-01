@@ -7,10 +7,9 @@ package {
     default_applicable_licenses: ["external_libmpeg2_license"],
 }
 
-cc_test {
+cc_binary {
     name: "mpeg2dec",
     host_supported:true,
-    gtest: false,
     cflags: [
         "-DPROFILE_ENABLE",
         "-DMD5_DISABLE",
