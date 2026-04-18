@@ -60,10 +60,12 @@
 //* @remarks
 //*
 //******************************************************************************
+.include "impeg2_neon_macros.s"
+.text
 
     .global ideint_cac_8x8_av8
 
-ideint_cac_8x8_av8:
+ENTRY ideint_cac_8x8_av8
 
     // Load first row of top
     ld1     {v28.8b},       [x0],       x2
@@ -222,4 +224,5 @@ ideint_cac_8x8_av8:
     cmp     x0,         #0
     mov     x4,         #1
     csel    x0,         x4,         x0,         ne
+    EXIT_FUNC
     ret

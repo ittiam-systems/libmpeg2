@@ -69,10 +69,12 @@
 //* @remarks
 //*
 //******************************************************************************
+.include "impeg2_neon_macros.s"
+.text
 
     .global icv_sad_8x4_av8
 
-icv_sad_8x4_av8:
+ENTRY icv_sad_8x4_av8
 
     // Load 8x4 source
     ld1     {v0.8b},    [x0],     x2
@@ -97,4 +99,5 @@ icv_sad_8x4_av8:
 
     smov    x0,         v0.h[0]
 
+    EXIT_FUNC
     ret
