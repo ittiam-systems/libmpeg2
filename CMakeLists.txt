@@ -54,7 +54,6 @@ list(APPEND LIBMPEG2DEC_SRCS
             "${MPEG2_ROOT}/common/impeg2_idct.c"
             "${MPEG2_ROOT}/common/impeg2_inter_pred.c"
             "${MPEG2_ROOT}/common/impeg2_job_queue.c"
-            "${MPEG2_ROOT}/common/impeg2_mem_func.c"
             "${MPEG2_ROOT}/common/ithread.c"
             "${MPEG2_ROOT}/decoder/impeg2d_api_main.c"
             "${MPEG2_ROOT}/decoder/impeg2d_bitstream.c"
@@ -94,7 +93,6 @@ if("${SYSTEM_PROCESSOR}" STREQUAL "aarch64" OR "${SYSTEM_PROCESSOR}" STREQUAL "a
             "${MPEG2_ROOT}/common/armv8/impeg2_format_conv.s"
             "${MPEG2_ROOT}/common/armv8/impeg2_idct.s"
             "${MPEG2_ROOT}/common/armv8/impeg2_inter_pred.s"
-            "${MPEG2_ROOT}/common/armv8/impeg2_mem_func.s"
             "${MPEG2_ROOT}/common/armv8/impeg2_neon_macros.s"
             "${MPEG2_ROOT}/decoder/arm/impeg2d_function_selector.c"
             "${MPEG2_ROOT}/decoder/arm/impeg2d_function_selector_av8.c")
@@ -113,7 +111,6 @@ elseif("${SYSTEM_PROCESSOR}" STREQUAL "aarch32")
                 "${MPEG2_ROOT}/common/arm/impeg2_format_conv.s"
                 "${MPEG2_ROOT}/common/arm/impeg2_idct.s"
                 "${MPEG2_ROOT}/common/arm/impeg2_inter_pred.s"
-                "${MPEG2_ROOT}/common/arm/impeg2_mem_func.s"
                 "${MPEG2_ROOT}/decoder/arm/impeg2d_function_selector_a9q.c")
 
   include_directories(${MPEG2_ROOT}/common/arm)
@@ -130,7 +127,6 @@ else()
                 "${MPEG2_ROOT}/common/x86/ideint_spatial_filter_ssse3.c"
                 "${MPEG2_ROOT}/common/x86/impeg2_idct_recon_sse42_intr.c"
                 "${MPEG2_ROOT}/common/x86/impeg2_inter_pred_sse42_intr.c"
-                "${MPEG2_ROOT}/common/x86/impeg2_mem_func_sse42_intr.c"
                 "${MPEG2_ROOT}/decoder/x86/impeg2d_function_selector.c"
                 "${MPEG2_ROOT}/decoder/x86/impeg2d_function_selector_avx2.c"
                 "${MPEG2_ROOT}/decoder/x86/impeg2d_function_selector_sse42.c"

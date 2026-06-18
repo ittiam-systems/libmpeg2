@@ -31,7 +31,6 @@
 #include "impeg2_inter_pred.h"
 #include "impeg2_idct.h"
 #include "impeg2_format_conv.h"
-#include "impeg2_mem_func.h"
 #include "impeg2_platform_macros.h"
 #include "ithread.h"
 #include "impeg2_job_queue.h"
@@ -1257,8 +1256,6 @@ static WORD32 impeg2d_init_thread_dec_ctxt(dec_state_t *ps_dec,
     ps_dec_thd->pf_halfx_halfy_8x8              =  ps_dec->pf_halfx_halfy_8x8;
     ps_dec_thd->pf_fullx_fully_8x8              =  ps_dec->pf_fullx_fully_8x8;
 
-    ps_dec_thd->pf_memset_8bit_8x8_block        =  ps_dec->pf_memset_8bit_8x8_block;
-    ps_dec_thd->pf_memset_16bit_8x8_linear_block        =  ps_dec->pf_memset_16bit_8x8_linear_block;
     ps_dec_thd->pf_copy_yuv420p_buf             =   ps_dec->pf_copy_yuv420p_buf;
     ps_dec_thd->pf_fmt_conv_yuv420p_to_yuv422ile    =   ps_dec->pf_fmt_conv_yuv420p_to_yuv422ile;
     ps_dec_thd->pf_fmt_conv_yuv420p_to_yuv420sp_uv  =   ps_dec->pf_fmt_conv_yuv420p_to_yuv420sp_uv;

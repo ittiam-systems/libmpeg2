@@ -54,7 +54,6 @@
 #include "impeg2_platform_macros.h"
 #include "impeg2_inter_pred.h"
 #include "impeg2_idct.h"
-#include "impeg2_mem_func.h"
 #include "impeg2_format_conv.h"
 #include "impeg2_job_queue.h"
 #include "impeg2_globals.h"
@@ -92,9 +91,6 @@ void impeg2d_init_function_ptr_av8(void *pv_codec)
     dec->pf_halfx_fully_8x8                 = &impeg2_mc_halfx_fully_8x8_av8;
     dec->pf_halfx_halfy_8x8                 = &impeg2_mc_halfx_halfy_8x8_av8;
     dec->pf_fullx_fully_8x8                 = &impeg2_mc_fullx_fully_8x8_av8;
-
-    dec->pf_memset_8bit_8x8_block           = &impeg2_memset_8bit_8x8_block_av8;
-    dec->pf_memset_16bit_8x8_linear_block   = &impeg2_memset0_16bit_8x8_linear_block_av8;
 
     dec->pf_copy_yuv420p_buf                = &impeg2_copy_frm_yuv420p;
     dec->pf_fmt_conv_yuv420p_to_yuv422ile   = &impeg2_fmt_conv_yuv420p_to_yuv422ile;
