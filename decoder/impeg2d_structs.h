@@ -153,8 +153,6 @@ typedef struct dec_state_struct_t
     pf_interpolate_t *pf_interpolate;
     pf_copy_mb_t     *pf_copy_mb;
 
-    pf_memset0_one_16bit_buf_t *pf_memset_16bit_8x8_linear_block;
-    pf_memset_8bit_t    *pf_memset_8bit_8x8_block;
     pf_copy_yuv420p_buf_t *pf_copy_yuv420p_buf;
     pf_fmt_conv_yuv420p_to_yuv422ile_t *pf_fmt_conv_yuv420p_to_yuv422ile;
     pf_fmt_conv_yuv420p_to_yuv420sp_t  *pf_fmt_conv_yuv420p_to_yuv420sp_uv;

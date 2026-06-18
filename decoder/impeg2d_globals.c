@@ -28,7 +28,6 @@
 #include "impeg2_inter_pred.h"
 #include "impeg2_idct.h"
 #include "impeg2_globals.h"
-#include "impeg2_mem_func.h"
 #include "impeg2_format_conv.h"
 #include "impeg2_macros.h"
 

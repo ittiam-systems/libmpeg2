@@ -17,14 +17,13 @@
  *****************************************************************************
  * Originally developed and contributed by Ittiam Systems Pvt. Ltd, Bangalore
 */
-
+#include <string.h>
 #include "iv_datatypedef.h"
 #include "impeg2_defs.h"
 #include "impeg2_globals.h"
 #include "impeg2_platform_macros.h"
 #include "impeg2_inter_pred.h"
 #include "impeg2_idct.h"
-#include "impeg2_mem_func.h"
 #include "impeg2_format_conv.h"
 #include "impeg2_disp_mgr.h"
 #include "impeg2_buf_mgr.h"
@@ -147,6 +146,7 @@ IMPEG2D_ERROR_CODES_T impeg2d_dec_d_slice(dec_state_t *ps_dec)
     UWORD8   *pu1_vld_buf;
 
     WORD16 i2_dc_diff;
+    WORD32 row;
     UWORD32 u4_frame_width = ps_dec->u2_frame_width;
     UWORD32 u4_frm_offset = 0;
     if(ps_dec->u2_picture_structure != FRAME_PICTURE)
@@ -200,7 +200,11 @@ IMPEG2D_ERROR_CODES_T impeg2d_dec_d_slice(dec_state_t *ps_dec)
             ps_dec->u2_def_dc_pred[Y_LUMA] = i2_dc_val;
             i2_dc_val = CLIP_U8(i2_dc_val);
 
-            ps_dec->pf_memset_8bit_8x8_block(pu1_vld_buf, i2_dc_val, u4_dst_wd);
+            for(row = BLK_SIZE; row > 0; row--)
+            {
+                memset(pu1_vld_buf, i2_dc_val, BLK_SIZE);
+                pu1_vld_buf += u4_dst_wd;
+            }
         }
 
 
@@ -215,7 +219,11 @@ IMPEG2D_ERROR_CODES_T impeg2d_dec_d_slice(dec_state_t *ps_dec)
         i2_dc_val                      = ps_dec->u2_def_dc_pred[U_CHROMA] + i2_dc_diff;
         ps_dec->u2_def_dc_pred[U_CHROMA]    = i2_dc_val;
         i2_dc_val = CLIP_U8(i2_dc_val);
-        ps_dec->pf_memset_8bit_8x8_block(pu1_vld_buf, i2_dc_val, u4_dst_wd);
+        for(row = BLK_SIZE; row > 0; row--)
+        {
+            memset(pu1_vld_buf, i2_dc_val, BLK_SIZE);
+            pu1_vld_buf += u4_dst_wd;
+        }
 
 
         /* Process V block of the MB */
@@ -225,7 +233,11 @@ IMPEG2D_ERROR_CODES_T impeg2d_dec_d_slice(dec_state_t *ps_dec)
         i2_dc_val                      = ps_dec->u2_def_dc_pred[V_CHROMA] + i2_dc_diff;
         ps_dec->u2_def_dc_pred[V_CHROMA]    = i2_dc_val;
         i2_dc_val = CLIP_U8(i2_dc_val);
-        ps_dec->pf_memset_8bit_8x8_block(pu1_vld_buf, i2_dc_val, u4_dst_wd);
+        for(row = BLK_SIZE; row > 0; row--)
+        {
+            memset(pu1_vld_buf, i2_dc_val, BLK_SIZE);
+            pu1_vld_buf += u4_dst_wd;
+        }
 
         /* Common MB processing Steps */
 

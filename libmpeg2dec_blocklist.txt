@@ -19,8 +19,6 @@ fun:impeg2_mc_fullx_halfy_8x8_a9q
 fun:impeg2_mc_halfx_fully_8x8_a9q
 fun:impeg2_mc_halfx_halfy_8x8_a9q
 fun:impeg2_mc_fullx_fully_8x8_a9q
-fun:impeg2_memset_8bit_8x8_block_a9q
-fun:impeg2_memset0_16bit_8x8_linear_block_a9q
 fun:impeg2_fmt_conv_yuv420p_to_yuv420sp_uv_a9q
 fun:impeg2_fmt_conv_yuv420p_to_yuv420sp_vu_a9q
 fun:impeg2_idct_recon_dc_av8
@@ -33,8 +31,6 @@ fun:impeg2_mc_fullx_halfy_8x8_av8
 fun:impeg2_mc_halfx_fully_8x8_av8
 fun:impeg2_mc_halfx_halfy_8x8_av8
 fun:impeg2_mc_fullx_fully_8x8_av8
-fun:impeg2_memset_8bit_8x8_block_av8
-fun:impeg2_memset0_16bit_8x8_linear_block_av8
 fun:impeg2_fmt_conv_yuv420p_to_yuv420sp_uv_av8
 fun:impeg2_fmt_conv_yuv420p_to_yuv420sp_vu_av8
 fun:impeg2_idct_recon_dc_sse42
@@ -47,8 +43,6 @@ fun:impeg2_mc_halfx_halfy_8x8_sse42
 fun:impeg2_mc_halfx_fully_8x8_sse42
 fun:impeg2_mc_fullx_halfy_8x8_sse42
 fun:impeg2_mc_fullx_fully_8x8_sse42
-fun:impeg2_memset_8bit_8x8_block_sse42
-fun:impeg2_memset0_16bit_8x8_linear_block_sse42
 fun:icv_sad_8x4_ssse3
 fun:icv_variance_8x4_ssse3
 fun:ideint_spatial_filter_ssse3
