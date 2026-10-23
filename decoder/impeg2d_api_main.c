@@ -1074,6 +1074,7 @@ IV_API_CALL_STATUS_T impeg2d_api_reset(iv_obj_t *ps_dechdl,
             ps_dec_state->aps_ref_pics[0] = NULL;
             ps_dec_state->aps_ref_pics[1] = NULL;
             ps_dec_state->ps_deint_pic = NULL;
+            memset(ps_dec_state->as_recent_fld, 0, sizeof(ps_dec_state->as_recent_fld));
         }
     }
     else
