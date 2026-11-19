@@ -200,6 +200,8 @@ IMPEG2D_ERROR_CODES_T impeg2d_dec_seq_hdr(dec_state_t *ps_dec)
             else if((ps_dec->u2_horizontal_size < MIN_WIDTH)
                             || (ps_dec->u2_vertical_size < MIN_HEIGHT))
             {
+                ps_dec->u2_reinit_max_height   = 0;
+                ps_dec->u2_reinit_max_width    = 0;
                 return IMPEG2D_UNSUPPORTED_DIMENSIONS;
             }
             else
@@ -222,6 +224,8 @@ IMPEG2D_ERROR_CODES_T impeg2d_dec_seq_hdr(dec_state_t *ps_dec)
     if((ps_dec->u2_horizontal_size < MIN_WIDTH)
                     || (ps_dec->u2_vertical_size < MIN_HEIGHT))
     {
+        ps_dec->u2_reinit_max_height   = 0;
+        ps_dec->u2_reinit_max_width    = 0;
         return IMPEG2D_UNSUPPORTED_DIMENSIONS;
     }
 
