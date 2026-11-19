@@ -107,6 +107,7 @@ void impeg2d_dec_hdr(void *pv_dec,impeg2d_video_decode_ip_t *ps_ip,
     }
 
     memcpy(ps_dec->pu1_input_buffer, ps_ip->s_ivd_video_decode_ip_t.pv_stream_buffer, u4_size);
+    memset(ps_dec->pu1_input_buffer + u4_size, 0, MIN_BUFFER_BYTES_AT_EOS);
 
     impeg2d_bit_stream_init(&(ps_dec->s_bit_stream), ps_dec->pu1_input_buffer,
         u4_size);
@@ -207,6 +208,7 @@ void impeg2d_dec_frm(void *pv_dec,impeg2d_video_decode_ip_t *ps_ip,
     }
 
     memcpy(ps_dec->pu1_input_buffer, ps_ip->s_ivd_video_decode_ip_t.pv_stream_buffer, u4_size);
+    memset(ps_dec->pu1_input_buffer + u4_size, 0, MIN_BUFFER_BYTES_AT_EOS);
 
     ps_dec->pu1_inp_bits_buf = ps_dec->pu1_input_buffer;
 
