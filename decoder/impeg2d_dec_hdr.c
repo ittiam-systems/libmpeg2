@@ -1471,6 +1471,13 @@ void impeg2d_dec_pic_data(dec_state_t *ps_dec)
     dec_state_t *ps_dec_thd;
     WORD32 i4_status;
     WORD32 i4_min_mb_y;
+    WORD32 i4_num_cores = ps_dec->i4_num_cores;
+
+    if((ps_dec->as_ref_buf[FORW][TOP].pu1_y == ps_dec->s_cur_frm_buf.pu1_y) ||
+       (ps_dec->as_ref_buf[BACK][TOP].pu1_y == ps_dec->s_cur_frm_buf.pu1_y))
+    {
+        i4_num_cores = 1;
+    }
 
 
     /* Resetting the MB address and MB coordinates at the start of the Frame */
@@ -1485,7 +1492,7 @@ void impeg2d_dec_pic_data(dec_state_t *ps_dec)
     }
 
     i4_min_mb_y = 1;
-    for(i=1; i < ps_dec->i4_num_cores; i++)
+    for(i=1; i < i4_num_cores; i++)
     {
         // initialize decoder context for thread
         // launch dec->u4_num_cores-1 threads
@@ -1531,7 +1538,7 @@ void impeg2d_dec_pic_data(dec_state_t *ps_dec)
     impeg2d_dec_pic_data_thread(ps_dec);
 
     // wait for threads to complete
-    for(i=1; i < ps_dec->i4_num_cores; i++)
+    for(i=1; i < i4_num_cores; i++)
     {
         if(ps_dec_state_multi_core->au4_thread_launched[i])
         {
