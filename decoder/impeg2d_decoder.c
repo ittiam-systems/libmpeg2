@@ -157,7 +157,7 @@ void impeg2d_dec_hdr(void *pv_dec,impeg2d_video_decode_ip_t *ps_ip,
         ps_op->s_ivd_video_decode_op_t.u4_frame_decoded_flag = 0;
 
         /* Set the stride */
-        if (0 == ps_dec->u4_frm_buf_stride)
+        if (ps_dec->u4_frm_buf_stride < ps_dec->u2_horizontal_size)
         {
             ps_dec->u4_frm_buf_stride = ps_dec->u2_horizontal_size;
         }
