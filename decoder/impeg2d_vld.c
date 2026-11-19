@@ -320,6 +320,8 @@ IMPEG2D_ERROR_CODES_T impeg2d_vld_inv_quant_mpeg1(
     pu1_weighting_matrix = (u2_intra_flag == 1) ? ps_dec->au1_intra_quant_matrix:
                     ps_dec->au1_inter_quant_matrix;
 
+    ps_dec->i4_last_value_one = 0;
+
     IMPEG2D_IQNT_INP_STATISTICS(pi2_out_addr, ps_dec->u4_non_zero_cols, ps_dec->u4_non_zero_rows);
     /* Inverse Quantize the Output of VLD */
     PROFILE_DISABLE_INVQUANT_IF0
