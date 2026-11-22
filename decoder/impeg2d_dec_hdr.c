@@ -157,6 +157,7 @@ IMPEG2D_ERROR_CODES_T impeg2d_dec_seq_hdr(dec_state_t *ps_dec)
 
     }
     impeg2d_bit_stream_flush(ps_stream,START_CODE_LEN);
+    ps_dec->u1_seq_disp_extn_present = 0;
 
     u2_width    = impeg2d_bit_stream_get(ps_stream,12);
     u2_height   = impeg2d_bit_stream_get(ps_stream,12);
